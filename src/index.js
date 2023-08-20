@@ -14,6 +14,7 @@ const {Certificate} = require('./models/certificate.js');
 const app = express()
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded());
 
 
 app.get("/", (req, res) => {
@@ -27,12 +28,12 @@ app.post("/certificates/create", async (req, res) => {
       tasks: req.body.tasks
     })
     await newCertificate.save()
-    res.status(201).end()
+    return res.status(201).end()
 })
 
 app.get("/certificates", async (req, res) => {
   const certificates = await Certificate.find({})
-  res.send(certificates)
+  return res.send(certificates).end()
 })
 
 app.listen(config.PORT, config.URL, () => {
