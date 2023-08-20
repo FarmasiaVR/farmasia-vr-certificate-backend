@@ -1,13 +1,16 @@
 
 const http = require('http');
 const config = require('./config.js')
+const express = require('express')
+const app = express()
 
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.end('Hello World');
-});
+app.get("/", (req, res) => {
+  res.send("Hello Word")
+})
 
-server.listen(config.PORT, config.URL, () => {
+
+app.listen(config.PORT, config.URL, () => {
   console.log(`Server running at http://${config.URL}:${config.PORT}/`);
 });
+
