@@ -31,6 +31,16 @@ app.post("/certificates/create", async (req, res) => {
     return res.status(201).end()
 })
 
+app.put("/certificates/create_put", async (req, res) => {
+  console.log(req.body)
+  const newCertificate = new Certificate({
+    user: req.body.user,
+    tasks: req.body.tasks
+  })
+  await newCertificate.save()
+  return res.status(201).end()
+})
+
 app.get("/certificates", async (req, res) => {
   const certificates = await Certificate.find({})
   return res.send(certificates).end()
