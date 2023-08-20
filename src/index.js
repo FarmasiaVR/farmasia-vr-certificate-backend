@@ -4,7 +4,12 @@ const config = require('./config.js')
 const express = require('express')
 const cors = require('cors');
 const mongoose = require('mongoose');
-mongoose.connect(config.MONGODB_URL)
+mongoose.connect(config.MONGODB_URL).then(() => {
+  console.log("connected to database")
+})
+.catch((err) => {
+  console.log(err)
+})
 const {Certificate} = require('./models/certificate.js');
 const app = express()
 app.use(cors())
