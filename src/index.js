@@ -8,6 +8,7 @@ mongoose.connect(config.MONGODB_URL)
 const {Certificate} = require('./models/certificate.js');
 const app = express()
 app.use(cors())
+app.use(express.json())
 
 
 app.get("/", (req, res) => {
@@ -15,12 +16,10 @@ app.get("/", (req, res) => {
 })
 
 app.post("/certificates/create", async (req, res) => {
+    console.log(req.body)
     const newCertificate = new Certificate({
-      user: "developmentTest",
-      tasks: [{
-        taskName: "try things out",
-        points: 1
-      }]
+      user: req.body.user,
+      tasks: req.body.tasks
     })
     await newCertificate.save()
     res.status(201).end()

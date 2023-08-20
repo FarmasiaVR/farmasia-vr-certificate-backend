@@ -4,7 +4,7 @@ const certificateSchema = new mongoose.Schema({
     user: {
         type: String
     },
-    completedTasks: [{
+    tasks: [{
         taskName: {
             type: String
         },
