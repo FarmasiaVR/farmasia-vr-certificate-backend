@@ -1,6 +1,0 @@
-PUT http://127.0.0.1:3000/certificates/create_put
-Content-Type: application/json
-
-{
-    "user": "hello from put request!"
-}
