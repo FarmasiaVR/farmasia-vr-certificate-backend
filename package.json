@@ -1,0 +1,23 @@
+{
+  "name": "farmasia-vr-certificate-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FarmasiaVR/farmasia-vr-certificate-backend.git"
+  },
+  "author": "FarmasiaVR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FarmasiaVR/farmasia-vr-certificate-backend/issues"
+  },
+  "homepage": "https://github.com/FarmasiaVR/farmasia-vr-certificate-backend#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
