@@ -1,3 +1,4 @@
 .env
 node_modules
 manual_request
+docker-compose.yml
