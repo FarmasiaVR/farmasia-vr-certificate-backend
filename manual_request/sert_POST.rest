@@ -1,0 +1,16 @@
+POST http://localhost:3001/certificates/create
+Content-Type: application/json
+
+{
+  "user": "John Doe",
+  "tasks": [
+    {
+      "taskName": "Task 1",
+      "points": 10
+    },
+    {
+      "taskName": "Task 2",
+      "points": 15
+    }
+  ]
+}

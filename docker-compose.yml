@@ -1,0 +1,27 @@
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: test-database
+   #volumes: 
+     # - ./backend/mongo_data:/data/db
+  server:
+    image: farmasiavr-backend
+    container_name: FarmasiaVR-backend
+    build: .
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - MONGODB_URI=mongodb://root:example@mongo:27017/
+      - SECRET="123456789"
+      - PORT=3001
+    ports:
+      - 3001:3001
+    depends_on:
+      - mongo
+  
