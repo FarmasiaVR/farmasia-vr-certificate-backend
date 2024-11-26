@@ -26,21 +26,16 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: MONGODB_URL
-            - name: EMAIL
+            - name: DEFAULT_EMAIL
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
-                  key: EMAIL
-            - name: EMAIL_PASSWORD
+                  key: DEFAULT_EMAIL
+            - name: DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
-                  key: EMAIL_PASSWORD
-            - name: RECIPIENT
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: RECIPIENT
+                  key: DEFAULT_PASSWORD
 ---
 apiVersion: v1
 kind: Service
@@ -51,6 +46,6 @@ spec:
   selector:
     app: farmasiavr-backend
   ports:
-    - port: 80
+    - port: 8080
       targetPort: 3001
   type: LoadBalancer
