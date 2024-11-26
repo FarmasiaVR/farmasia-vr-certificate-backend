@@ -16,8 +16,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded());
 
+// Creating the initial info in db with env values
 async function setupDatabase() {
-  // creating the initial info in db
   const newCertificate = new Certificate({
     email: config.DEFAULT_EMAIL,
     password: config.DEFAULT_PASSWORD
@@ -35,13 +35,16 @@ app.get("/", (req, res) => {
 app.post("/certificates/create", async (req, res) => {
     console.log(req.body)
     const authorization = req.get('authorization')
-    const backendInfo = Certificate.findOne()
+    const backendInfo = await Certificate.findOne()
+
     if (authorization !== backendInfo.password) {
       console.log("Unauthorized")
-      res.send("Unauthorized")
+      return res.send("Unauthorized")
     }
-    //logic for sending data to Pate service TBA
-    //the email address is in backendInfo.email
+
+    console.log("Request is authorized")
+    // Implemement logic for sending data to Pate service TBA
+    // the email address is in backendInfo.email
     
     return res.status(201).end()
 })
@@ -49,16 +52,20 @@ app.post("/certificates/create", async (req, res) => {
 // Endpoint for changing either the pharmacy department receiving
 // email address or the password to be inserted in game.
 app.put("/certificates/create_put", async (req, res) => {
+
+  // Create check for HY authentication 
   console.log(req.body)
-  const newCertificate = new Certificate({
-    email: req.body.email,
-    password: req.body.password
-  })
-  await newCertificate.save()
+  const updateCertificate = await Certificate.findOne()
+  updateCertificate.email = req.body.email
+  updateCertificate.password = req.body.password
+  
+  await updateCertificate.save()
   return res.status(201).end()
 })
 
 app.get("/certificates", async (req, res) => {
+
+  // Create check for HY authentication 
   const certificateInfo = await Certificate.findOne({})
   return res.send(certificateInfo).end()
 })
