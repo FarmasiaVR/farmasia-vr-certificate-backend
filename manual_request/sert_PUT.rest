@@ -1,0 +1,7 @@
+PUT http://localhost:3001/certificates/create_put
+Content-Type: application/json
+
+{
+  "email": "john.doe@email.org",
+  "password": "new-password"
+}

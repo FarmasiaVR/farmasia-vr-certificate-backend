@@ -1,5 +1,6 @@
 POST http://localhost:3001/certificates/create
 Content-Type: application/json
+Authorization: default-password
 
 {
   "user": "John Doe",
