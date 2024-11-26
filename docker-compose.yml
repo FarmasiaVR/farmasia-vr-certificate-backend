@@ -17,8 +17,8 @@ services:
     environment:
       - MONGODB_URI=mongodb://root:example@mongo:27017/
       - PORT=3001
-      - DEFAULT_EMAIL=
-      - DEFAULT_PASSWORD=
+      - DEFAULT_EMAIL=default@email.org
+      - DEFAULT_PASSWORD=default-password
     ports:
       - 3001:3001
     depends_on:
