@@ -8,8 +8,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: test-database
-   #volumes: 
-     # - ./backend/mongo_data:/data/db
   server:
     image: farmasiavr-backend
     container_name: FarmasiaVR-backend
@@ -18,8 +16,9 @@ services:
       - .:/usr/src/app
     environment:
       - MONGODB_URI=mongodb://root:example@mongo:27017/
-      - SECRET="123456789"
       - PORT=3001
+      - DEFAULT_EMAIL=
+      - DEFAULT_PASSWORD=
     ports:
       - 3001:3001
     depends_on:
