@@ -1,3 +1,5 @@
+const logger = require('./logger')
+
 const sessionChecker = (req, res, next) => {
     if (req.session.user) {
       next()
