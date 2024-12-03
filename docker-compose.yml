@@ -16,9 +16,11 @@ services:
   server:
     image: farmasiavr-backend
     container_name: FarmasiaVR-backend
-    build: .
+    build: 
+      context: .
+      dockerfile: dev.Dockerfile
     volumes:
-      - .:/usr/src/app
+      - ./farmasia-ui/dist:/usr/src/app/public
     environment:
       - MONGODB_URL=mongodb://root:example@mongo:27017/
       - PORT=3001
