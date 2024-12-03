@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const cors = require('cors');
 const passport = require('passport')
+const path = require('path');
 
 const loginRouter = require('./routes/loginRouter')
 const certificateRouter = require('./routes/certificateRouter')
@@ -29,7 +30,11 @@ app.get("/health", (req, res) => {
   res.send("Health check OK")
 })
 
-// app.use(express.static("./dist"))
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.listen(config.PORT, async () => {
   // await setupAuthentication()
