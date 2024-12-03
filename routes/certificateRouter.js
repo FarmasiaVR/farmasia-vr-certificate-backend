@@ -23,8 +23,6 @@ certificateRouter.post("/create", async (req, res) => {
 // Endpoint for changing either the pharmacy department receiving
 // email address or the password to be inserted in game.
 certificateRouter.put("/create_put", async (req, res) => {
-
-  // Create check for HY authentication 
   console.log(req.body)
   const updateCertificate = await Certificate.findOne()
   updateCertificate.email = req.body.email
@@ -35,8 +33,6 @@ certificateRouter.put("/create_put", async (req, res) => {
 })
 
 certificateRouter.get("/", async (req, res) => {
-
-  // Create check for HY authentication 
   const certificateInfo = await Certificate.findOne({})
   return res.send(certificateInfo).end()
 })
