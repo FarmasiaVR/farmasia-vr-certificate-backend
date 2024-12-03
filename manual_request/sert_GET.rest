@@ -1,1 +1,1 @@
-GET http://localhost:3001/certificates
+GET http://localhost:3001/api/certificates

@@ -1,4 +1,4 @@
-PUT http://localhost:3001/certificates/create_put
+PUT http://localhost:3001/api/certificates/create_put
 Content-Type: application/json
 
 {
