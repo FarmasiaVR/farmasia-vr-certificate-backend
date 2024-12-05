@@ -1,8 +1,7 @@
-const redis = require('redis')
-const { REDIS_URL } = require('./config')
-const { SESSION_SECRET } = require('./config')
-const session = require('express-session')
-const RedisStore = require('connect-redis').default
+import redis from 'redis'
+import { REDIS_URL, SESSION_SECRET } from './config.js'
+import session from 'express-session'
+import RedisStore from 'connect-redis'
 
 const redisConnection = `redis://${REDIS_URL}`
 
@@ -44,4 +43,4 @@ const redisConf = {
   }
 }
 
-module.exports = { redisClient, redisConf }
+export default redisConf
