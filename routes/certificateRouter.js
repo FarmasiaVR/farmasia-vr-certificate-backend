@@ -1,6 +1,8 @@
-const certificateRouter = require('express').Router()
-const mongoose = require('mongoose');
-const {Certificate} = require('../models/certificate.js');
+import express from 'express'
+
+const certificateRouter = express()
+import mongoose from 'mongoose'
+import Certificate from '../models/certificate.js'
 
 // Endpoint for receiving gameplay summaries
 certificateRouter.post("/create", async (req, res) => {
@@ -37,4 +39,4 @@ certificateRouter.get("/", async (req, res) => {
   return res.send(certificateInfo).end()
 })
 
-module.exports = certificateRouter
+export default certificateRouter

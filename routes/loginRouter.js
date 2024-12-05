@@ -1,7 +1,7 @@
-const express = require('express')
-// const passport = require('passport')
+import express from 'express'
+import passport from 'passport'
 
-const loginRouter = express.Router()
+const loginRouter = express()
 
 loginRouter.get('/login', async (req, res) => {
   const { user } = req.user
@@ -11,16 +11,16 @@ loginRouter.get('/login', async (req, res) => {
   return res.send(user)
 })
 
-// loginRouter.get('/oidc', passport.authenticate('oidc'))
+loginRouter.get('/oidc', passport.authenticate('oidc'))
 
 
-//loginRouter.get(
-//  '/callback',
-//  passport.authenticate('oidc', { failureRedirect: '/' }),
-//  (_, res) => {
-//    res.redirect('/')
-//  }
-//)
+loginRouter.get(
+  '/callback',
+  passport.authenticate('oidc', { failureRedirect: '/' }),
+  (_, res) => {
+    res.redirect('/')
+  }
+)
 
 loginRouter.get('/logout', async (req, res, next) => {
   req.logout((err) => {
@@ -30,4 +30,4 @@ loginRouter.get('/logout', async (req, res, next) => {
   res.redirect('/')
 })
 
-module.exports = loginRouter
+export default loginRouter
