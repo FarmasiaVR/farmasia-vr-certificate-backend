@@ -1,18 +1,18 @@
-const config = require('./utils/config.js')
-const express = require('express')
-const session = require('express-session')
-const cors = require('cors');
-const passport = require('passport')
-const path = require('path');
+import express from 'express'
+import passport from 'passport'
+import session from 'express-session'
+import cors from 'cors'
+import path from 'path'
 
-const loginRouter = require('./routes/loginRouter')
-const certificateRouter = require('./routes/certificateRouter')
+import { PORT } from './utils/config.js'
+import loginRouter from './routes/loginRouter.js'
+import certificateRouter from './routes/certificateRouter.js'
 
-//const setupAuthentication = require('./utils/oidc')
-const { setupDatabase } = require('./utils/db')
-const { redisConf } =require('./utils/redis')
-const middleware = require('./utils/middleware')
+import setupAuthentication from './utils/oidc.js'
+import setupDatabase from './utils/db.js'
 
+import redisConf from './utils/redis.js'
+import middleware from './utils/middleware.js'
 
 const app = express()
 app.use(cors())
@@ -20,8 +20,8 @@ app.use(express.json())
 app.use(express.urlencoded());
 app.use(middleware.requestLogger)
 app.use(session(redisConf))
-//app.use(passport.initialize())
-//app.use(passport.session())
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/api/login', loginRouter)
 app.use('/api/certificates', certificateRouter)
@@ -30,15 +30,15 @@ app.get("/health", (req, res) => {
   res.send("Health check OK")
 })
 
-app.use(express.static(path.join(__dirname, 'public')));
+const DIST_PATH = path.resolve('public')
+const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.use(express.static(DIST_PATH))
+app.get('*', (_, res) => res.sendFile(INDEX_PATH))
 
-app.listen(config.PORT, async () => {
-  // await setupAuthentication()
+app.listen(PORT, async () => {
   await setupDatabase()
+  await setupAuthentication()
 
-  console.log(`Server running at ${config.PORT}`);
+  console.log(`Server running at ${PORT}`);
 });
