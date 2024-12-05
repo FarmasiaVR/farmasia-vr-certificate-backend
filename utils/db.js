@@ -1,8 +1,8 @@
-const config = require('./config.js')
-const mongoose = require('mongoose');
-const {Certificate} = require('../models/certificate.js');
+import {DEFAULT_EMAIL, DEFAULT_PASSWORD, MONGODB_URL} from './config.js'
+import mongoose from 'mongoose'
+import Certificate from '../models/certificate.js';
 
-mongoose.connect(config.MONGODB_URL).then(() => {
+mongoose.connect(MONGODB_URL).then(() => {
     console.log("connected to database")
   })
   .catch((err) => {
@@ -12,10 +12,10 @@ mongoose.connect(config.MONGODB_URL).then(() => {
 // Creating the initial info in db with env values
 async function setupDatabase() {
   const newCertificate = new Certificate({
-    email: config.DEFAULT_EMAIL,
-    password: config.DEFAULT_PASSWORD
+    email: DEFAULT_EMAIL,
+    password: DEFAULT_PASSWORD
   })
   await newCertificate.save()
 }
 
-module.exports = { setupDatabase }
+export default setupDatabase
