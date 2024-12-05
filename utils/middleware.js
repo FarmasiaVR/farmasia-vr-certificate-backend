@@ -1,4 +1,4 @@
-const logger = require('./logger')
+import logger from './logger.js'
 
 const sessionChecker = (req, res, next) => {
     if (req.session.user) {
@@ -16,7 +16,7 @@ const sessionChecker = (req, res, next) => {
     next()
   }
 
-  module.exports = { 
+  export default { 
     sessionChecker,
     requestLogger
  }
