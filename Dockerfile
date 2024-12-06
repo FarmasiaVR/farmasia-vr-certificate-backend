@@ -1,4 +1,4 @@
-FROM node:16-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Build the frontend
 WORKDIR /usr/src/ui
@@ -8,7 +8,7 @@ COPY ./farmasia-ui ./
 RUN npm run build
 
 # Build the backend
-FROM node:16-alpine
+FROM node:20-alpine
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
