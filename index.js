@@ -5,14 +5,13 @@ import cors from 'cors'
 import path from 'path'
 
 import { PORT } from './utils/config.js'
-import loginRouter from './routes/loginRouter.js'
-import certificateRouter from './routes/certificateRouter.js'
 
 import setupAuthentication from './utils/oidc.js'
 import setupDatabase from './utils/db.js'
-
 import redisConf from './utils/redis.js'
 import middleware from './utils/middleware.js'
+
+import router from './routes/router.js'
 
 const app = express()
 app.use(cors())
@@ -23,8 +22,8 @@ app.use(session(redisConf))
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/api/login', loginRouter)
-app.use('/api/certificates', certificateRouter)
+app.use('/api', (req, res, next) => router(req, res, next))
+app.use('/api', (_, res) => res.sendStatus(404))
 
 app.get("/health", (req, res) => {
   res.send("Health check OK")
