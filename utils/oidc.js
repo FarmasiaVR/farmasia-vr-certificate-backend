@@ -1,4 +1,3 @@
-// oidc.js
 import passport from 'passport';
 import { 
   OIDC_CLIENT_ID, 
@@ -17,7 +16,7 @@ const params = {
       uid: { essential: true },
     },
     userinfo: {
-      hyGroupCn: { essential: true }
+      email: { essential: true },
     },
   },
 };
@@ -38,13 +37,13 @@ const getClient = async () => {
 const verifyLogin = async (_tokenSet, userinfo, done) => {
   const {
     uid: username,
-    hyGroupCn: iamGroups,
+    email: email,
   } = userinfo
 
 
   const user = {
     username:  username,
-    iamGroups: iamGroups,
+    email: email,
   }
 
   done(null, user)
@@ -58,9 +57,23 @@ const setupAuthentication = async () => {
     console.log('Issuer discovered successfully');
 
     passport.serializeUser((user, done) => {
-      const { username, iamGroups } = user
-      return done(null, { username, iamGroups })
+      const { username, email } = user
+      return done(null, { username, email })
     })
+
+    passport.deserializeUser(
+      async (
+        { username, email },
+        done
+      ) => {
+        const user = { 
+          username,
+          email
+        }
+  
+        return done(null, { ...user })
+      }
+    )
 
     passport.use('oidc', new Strategy({ client, params }, verifyLogin))
 
