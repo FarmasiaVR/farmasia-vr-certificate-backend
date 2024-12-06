@@ -3,20 +3,35 @@ import passport from 'passport'
 
 const loginRouter = express()
 
-loginRouter.get('/login', async (req, res) => {
-  const { user } = req.user
-
-  if (!user?.username) return res.status(401).send('Unauthorized')
-
-  return res.send(user)
+loginRouter.get('/', async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send('Unauthorized')
+    }
+    return res.send(req.user)
+  } catch (error) {
+    console.error('Error in login route:', error)
+    return res.status(500).send('Internal Server Error')
+  }
 })
 
-loginRouter.get('/oidc', passport.authenticate('oidc'))
+loginRouter.get('/oidc', (req,res, next) => {
+  if (req.user) {
+    res.redirect('/edit')
+  } else {
+    console.log('Starting OIDC authentication...');
+    passport.authenticate('oidc')(req, res, next)
+  }
+})
 
 
 loginRouter.get(
   '/callback',
-  passport.authenticate('oidc', { failureRedirect: '/' }),
+  passport.authenticate('oidc', { 
+    failureRedirect: '/',
+    failureMessage: true,
+    successRedirect: '/edit'
+   }),
   (_, res) => {
     res.redirect('/')
   }
