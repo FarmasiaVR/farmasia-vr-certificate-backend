@@ -17,9 +17,8 @@ loginRouter.get('/', async (req, res) => {
 
 loginRouter.get('/oidc', (req,res, next) => {
   if (req.user) {
-    res.redirect('/edit')
+    res.redirect('/')
   } else {
-    console.log('Starting OIDC authentication...');
     passport.authenticate('oidc')(req, res, next)
   }
 })
@@ -30,7 +29,7 @@ loginRouter.get(
   passport.authenticate('oidc', { 
     failureRedirect: '/',
     failureMessage: true,
-    successRedirect: '/edit'
+    successRedirect: '/'
    }),
   (_, res) => {
     res.redirect('/')
