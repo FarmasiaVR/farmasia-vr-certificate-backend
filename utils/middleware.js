@@ -1,10 +1,17 @@
 import logger from './logger.js'
+import { NODE_ENV } from './config.js'
 
 const sessionChecker = (req, res, next) => {
-    if (req.session.user) {
+    if ( NODE_ENV === 'development' ) {
+      req.user = {
+        username: "test",
+        email: "test@email.org"
+      }
+    }
+    if (req.user) {
       next()
     } else {
-      res.status(401).json({ error: 'Unauthorized' })
+      res.redirect('/api/login/oidc')
     }
   }
 
