@@ -8,6 +8,10 @@ const UpdateCredentials = ({ setMessage, setError }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if ( password.length < 5) {
+      alert('Password needs to be atleast 5 letters long')
+      return
+    }
     if (password !== password2) {
       alert('Passwords do not match!')
       return
