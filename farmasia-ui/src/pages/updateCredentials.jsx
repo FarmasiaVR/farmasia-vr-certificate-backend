@@ -4,7 +4,7 @@ import axios from 'axios';
 const UpdateCredentials = ({ setMessage, setError }) => {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
-  const [email, setEmail] = useState("email@example.com")
+  const [email, setEmail] = useState("")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
