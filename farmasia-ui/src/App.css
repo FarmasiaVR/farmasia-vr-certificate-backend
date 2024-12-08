@@ -1,13 +1,26 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+
+header {
+	display: block;
+	width:100%;
+	height:129px;
+	border-bottom:1px solid #363636;
+	background:#0d0d0d;
+	font-size:0.8em;
 }
 
-
+header .content, header .content-consent {
+	background:transparent url(${hyLogo}) 20px center no-repeat;
+	height:100%;
+	overflow:hidden;
+  margin-left: 5em;
+}
 
 .card {
   padding: 2em;
+}
+
+div .farmasia {
+  margin: 2em;
 }
 
