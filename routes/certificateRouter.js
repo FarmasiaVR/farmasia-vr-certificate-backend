@@ -1,29 +1,28 @@
 import express from 'express'
-
-const certificateRouter = express()
-import mongoose from 'mongoose'
 import Certificate from '../models/certificate.js'
+const certificateRouter = express()
 
-// Endpoint for receiving gameplay summaries
+
+// Endpoint for receiving gameplay summaries and testing
+// if the Authorization header is correct
 certificateRouter.post("/create", async (req, res) => {
     console.log(req.body)
     const authorization = req.get('authorization')
-    const backendInfo = await Certificate.findOne()
+    const info = await Certificate.findOne()
 
-    if (authorization !== backendInfo.password) {
+    if (authorization !== info.password) {
       console.log("Unauthorized")
       return res.send("Unauthorized")
     }
 
     console.log("Request is authorized")
     // Implemement logic for sending data to Pate service TBA
-    // the email address is in backendInfo.email
+    // the email address is in info.email
     
     return res.status(201).end()
 })
 
-// Endpoint for changing either the pharmacy department receiving
-// email address or the password to be inserted in game.
+
 certificateRouter.put("/create_put", async (req, res) => {
   console.log(req.body)
   const updateCertificate = await Certificate.findOne()
