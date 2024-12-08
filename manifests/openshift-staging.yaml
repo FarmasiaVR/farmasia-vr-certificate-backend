@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: farmasiavr-backend
-          image: juhosii/farmasiavr-backend:1.23
+          image: farmasiavr/farmasiavr-backend:1.0
           ports:
             - containerPort: 3001
           env:
