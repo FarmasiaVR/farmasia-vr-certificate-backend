@@ -181,6 +181,7 @@ metadata:
   name: redis
   labels:
     app: redis
+    application: farmasiavr-backend
 spec:
   replicas: 1
   selector:
@@ -192,12 +193,12 @@ spec:
         app: redis
     spec:
       securityContext:
-        fsGroup: 1001490000
+        fsGroup: 1001330000
       containers:
       - name: redis
         image: redis:latest
         securityContext:
-          runAsUser: 1001490000
+          runAsUser: 1001330000
           runAsNonRoot: true
           allowPrivilegeEscalation: false
         ports:
@@ -217,6 +218,7 @@ metadata:
   name: redis
   labels:
     app: redis
+    application: farmasiavr-backend
 spec:
   ports:
   - port: 6379
