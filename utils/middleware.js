@@ -5,7 +5,6 @@ const sessionChecker = (req, res, next) => {
     if ( NODE_ENV === 'development' ) {
       req.user = {
         username: "test",
-        email: "test@email.org"
       }
     }
     if (req.user) {

@@ -15,9 +15,6 @@ const params = {
     id_token: {
       uid: { essential: true },
     },
-    userinfo: {
-      email: { essential: true },
-    },
   },
 };
 
@@ -37,13 +34,10 @@ const getClient = async () => {
 const verifyLogin = async (_tokenSet, userinfo, done) => {
   const {
     uid: username,
-    email: email,
   } = userinfo
-
 
   const user = {
     username:  username,
-    email: email,
   }
 
   done(null, user)
@@ -57,18 +51,17 @@ const setupAuthentication = async () => {
     console.log('Issuer discovered successfully');
 
     passport.serializeUser((user, done) => {
-      const { username, email } = user
-      return done(null, { username, email })
+      const { username } = user
+      return done(null, { username })
     })
 
     passport.deserializeUser(
       async (
-        { username, email },
+        { username },
         done
       ) => {
         const user = { 
           username,
-          email
         }
   
         return done(null, { ...user })
