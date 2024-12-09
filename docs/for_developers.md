@@ -5,7 +5,11 @@ There is a docker-compose.yml file in the repository root which can be used to a
 
 **docker compose -f docker-compose.yml up --build**
 
-You can use CTRL+C to shutdown the composed environment.
+You can use CTRL+C to shutdown the composed environment. Due to docker compose volume mounts the React UI needs to be built before starting up the composed environment. (there must some easier way to do it, but this is it for now). So to have the newest UI version navigate to /farmasia-ui folder and use the command:
+
+**npm run build**
+
+This creates the /dist folder which the compose environment mounts.
 
 ## Openshift staging
 The manifests folder in the repository has a YAML file named openshift-staging.yaml which has all the relevant information to setup the required deployments, services and routes (one route for external internet access to UI). 
