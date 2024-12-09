@@ -1,5 +1,7 @@
 # FarmasiaVR backend
-This repository houses the FarmasiaVR backend. The backend is intented to send info to faculty members about students passing an educational scenario within FarmasiaVR game. The backend also has a UI for changing authentication password which the game uses when sending info of the game scenarios. The address to which the reports of passing a scenario are sent can also be changed in the UI. 
+This repository houses the FarmasiaVR backend. The backend is intented to send info to faculty members about students passing an educational scenario within FarmasiaVR game. The backend also has a UI for changing authentication password which the game uses when sending info of the game scenarios and ability to change the email to which the results are sent. The address to which the reports of passing a scenario are sent can also be changed in the UI. 
+
+[For development](https://github.com/FarmasiaVR/farmasia-vr-certificate-backend/blob/main/docs/for_developers.md)
 
 ## Architechture
 The backend runs within the HY Openshift platform as a NodeJS container with a React Vite UI. Database being used is a MongoDB non-relational document database. Redis is used as a session storage.
