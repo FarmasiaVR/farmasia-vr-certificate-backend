@@ -101,6 +101,18 @@ spec:
     termination: edge  
     insecureEdgeTerminationPolicy: Redirect
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: farmasiavr-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Mi
+  storageClassName: pomppa25
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -138,11 +150,16 @@ spec:
                   name: app-secrets
                   key: MONGODB_DATABASE
           volumeMounts:
-            - name: mongo-storage
+            - name: farmasiavr-pvc
               mountPath: /data/db
       volumes:
-        - name: mongo-storage
-          emptyDir: {}
+        - name: farmasiavr-pvc
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: farmasiavr-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
 ---
 apiVersion: v1
 kind: Service
