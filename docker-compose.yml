@@ -26,8 +26,6 @@ services:
       - PORT=3001
       - DEFAULT_EMAIL=default@email.org
       - DEFAULT_PASSWORD=default-password
-      - REDIS_HOST=redis
-      - SESSION_SECRET=123456789
       - REDIS_URL=redis:6379
     ports:
       - 3001:3001
