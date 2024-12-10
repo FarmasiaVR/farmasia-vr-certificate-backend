@@ -6,7 +6,7 @@ This repository houses the FarmasiaVR backend. The backend is intented to send i
 ## Architechture
 The backend runs within the HY Openshift platform as a NodeJS container with a React Vite UI. Database being used is a MongoDB non-relational document database. Redis is used as a session storage.
 
-HY user authentication is done with openid-client for the OIDC authentication. 
+HY user authentication is done with Shibboleth. 
 
 ## Requirements
 No sensitive information should be saved. Only the faculty email address to which the reports are sent to and the password needed for authentication in the POST request are saved within the database. 
