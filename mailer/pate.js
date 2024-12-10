@@ -1,9 +1,6 @@
 import axios from 'axios'
-
 import logger from '../utils/logger'
-
 import { PATE_URL } from '../utils/config.js'
-import { inProduction, inStaging } from '../../config'
 
 const settings = {
   hideToska: false,
@@ -11,7 +8,7 @@ const settings = {
   color: '#107eab',
   header: 'Prethesis',
   headerFontColor: 'white',
-  dryrun: !inProduction || inStaging,
+  dryrun: true,
 }
 
 const pateClient = axios.create({
@@ -21,20 +18,20 @@ const pateClient = axios.create({
   },
 })
 
-const sendEmail = async (targets, text, subject) => {
-  const emails = targets.map((to) => ({ to, subject }))
+const sendEmail = async (target, text, subject) => {
+  const email = target
 
   const mail = {
     template: {
       from: 'Prethesis',
       text,
     },
-    emails,
+    email,
     settings,
   }
 
   logger.info(`Sending emails to ${targets.length} recipients`, {
-    recipients: targets,
+    recipients: target,
     subject,
     text,
   })
