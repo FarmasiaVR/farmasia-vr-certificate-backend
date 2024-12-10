@@ -10,7 +10,7 @@ const sessionChecker = (req, res, next) => {
     if (req.user) {
       next()
     } else {
-      res.redirect('/api/login/oidc')
+      res.redirect('/')
     }
   }
 
