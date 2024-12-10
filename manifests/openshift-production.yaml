@@ -46,26 +46,6 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: SESSION_SECRET
-            - name: OIDC_ISSUER
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: OIDC_ISSUER
-            - name: OIDC_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: OIDC_CLIENT_ID
-            - name: OIDC_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: OIDC_CLIENT_SECRET
-            - name: OIDC_REDIRECT_URI
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: OIDC_REDIRECT_URI
 ---
 apiVersion: v1
 kind: Service
