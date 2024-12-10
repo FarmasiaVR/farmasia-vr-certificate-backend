@@ -12,3 +12,9 @@ export const REDIS_URL = process.env.REDIS_URL
 
 export const NODE_ENV = process.env.NODE_ENV
 
+export const PATE_URL =
+  NODE_ENV === 'production'
+    ? 'https://api-toska.apps.ocp-prod-0.k8s.it.helsinki.fi/pate/'
+    : 'https://api-toska.apps.ocp-test-0.k8s.it.helsinki.fi/pate/'
+
+export const API_TOKEN = process.env.API_TOKEN || ''
