@@ -1,17 +1,27 @@
 import logger from './logger.js'
 import { NODE_ENV } from './config.js'
 
+
+const parseIamGroups = (iamGroups) =>
+  iamGroups?.split(';').filter(Boolean) ?? []
+
 const sessionChecker = (req, res, next) => {
     if ( NODE_ENV === 'development' ) {
       req.user = {
-        username: "test",
+        hygroupcn: "test",
       }
+      return next()
     }
-    if (req.user) {
-      next()
-    } else {
-      res.redirect('/')
+
+    const { hygroupcn } = req.headers
+    const iamGroups = parseIamGroups(hygroupcn)
+    
+    const user = {
+      iamGroups,
     }
+
+    req.user = user
+    return next()
   }
 
   const requestLogger = (request, response, next) => {
