@@ -7,8 +7,8 @@ import middleware from '../utils/middleware.js'
 const router = express()
 
 router.use(shibbolethMiddleware)
+router.use('/certificates', certificateRouter)
 router.use(middleware.sessionChecker)
 router.use('/login', loginRouter)
-router.use('/certificates', certificateRouter)
 
 export default router
