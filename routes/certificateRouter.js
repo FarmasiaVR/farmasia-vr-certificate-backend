@@ -38,10 +38,19 @@ certificateRouter.post("/create", async (req, res) => {
 
 
 certificateRouter.put("/create_put", middleware.sessionChecker, async (req, res) => {
-  console.log(req.body)
+
   const updateCertificate = await Certificate.findOne()
-  updateCertificate.email = req.body.email
-  updateCertificate.password = req.body.password
+
+  if (req.body.email === '') {
+    updateCertificate.password = req.body.password
+  }
+  else if (req.body.password === '') {
+    updateCertificate.email = req.body.email
+  }
+  else {
+    updateCertificate.email = req.body.email
+    updateCertificate.password = req.body.password
+  }
   
   await updateCertificate.save()
   return res.status(201).end()
