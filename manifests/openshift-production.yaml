@@ -46,6 +46,11 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: SESSION_SECRET
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: API_TOKEN
 ---
 apiVersion: v1
 kind: Service
