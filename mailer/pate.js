@@ -1,40 +1,35 @@
 import axios from 'axios'
-import logger from '../utils/logger'
-import { PATE_URL } from '../utils/config.js'
+import { PATE_URL, API_TOKEN } from '../utils/config.js'
 
 const settings = {
   hideToska: false,
   disableToska: true,
   color: '#107eab',
-  header: 'Prethesis',
+  header: 'FarmasiaVR',
   headerFontColor: 'white',
-  dryrun: true,
+  dryrun: false,
 }
 
 const pateClient = axios.create({
   baseURL: PATE_URL,
   params: {
-    token: process.env.API_TOKEN,
+    token: API_TOKEN,
   },
 })
 
-const sendEmail = async (target, text, subject) => {
-  const email = target
+const sendEmail = async (targets, text, subject) => {
+  const emails = targets.map((to) => ({ to, subject }))
 
   const mail = {
     template: {
-      from: 'Prethesis',
+      from: 'FarmasiaVR',
       text,
     },
-    email,
+    emails,
     settings,
   }
 
-  logger.info(`Sending emails to ${targets.length} recipients`, {
-    recipients: target,
-    subject,
-    text,
-  })
+  console.log(`Sending email to ${targets}`)
 
   await pateClient.post('/', mail)
 }
