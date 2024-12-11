@@ -27,6 +27,7 @@ services:
       - DEFAULT_EMAIL=default@email.org
       - DEFAULT_PASSWORD=default-password
       - REDIS_URL=redis:6379
+      - API_TOKEN=''
     ports:
       - 3001:3001
     depends_on:
