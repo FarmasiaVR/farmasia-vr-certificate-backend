@@ -6,16 +6,38 @@ const UpdateCredentials = ({ setMessage, setError }) => {
   const [password2, setPassword2] = useState('')
   const [email, setEmail] = useState("")
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if ( password.length < 5) {
+  const validatePassword = () => {
+    if ( password.length < 5 && password !== '') {
       alert('Password needs to be atleast 5 letters long')
-      return
+      return false
     }
     if (password !== password2) {
       alert('Passwords do not match!')
+      return false
+    }
+    return true
+  }
+
+  const validateEmail = () => {
+    if (email.length < 5 && email !== '') {
+      alert('Please provide a valid email address')
+      return false
+    }
+    return true
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (email === '' && password === '') {
+      setMessage('Please provide either an email or a password')
       return
     }
+    
+    if (!validateEmail() || !validatePassword()) {
+      return
+    }
+
     try {
       const response = await axios.put("/api/certificates/create_put", {
         email,
@@ -29,6 +51,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
     }
     setPassword('')
     setPassword2('')
+    setEmail('')
     setTimeout(() => {
       setError(false)
       setMessage('')
