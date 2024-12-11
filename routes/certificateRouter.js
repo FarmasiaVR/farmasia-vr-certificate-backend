@@ -25,7 +25,7 @@ certificateRouter.post("/create", async (req, res) => {
       // the email address is in info.email
       const message = "Testing Pate!"
       
-      const target = info.email
+      const target = [info.email]
       await sendEmail(target, message, subject)
   
       return res.status(201).end()
