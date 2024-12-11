@@ -4,11 +4,13 @@
 There is a docker-compose.yml file in the repository root which can be used to aid local development. To have a full local development environment running you need to have Docker running and use the following command in your terminal of choice within the repo root:
 
 **npm install**
+
 **docker compose -f docker-compose.yml up --build**
 
 You can use CTRL+C to shutdown the composed environment. Due to docker compose volume mounts the React UI needs to be built before starting up the composed environment. (there must some easier way to do it, but this is it for now). So to have the newest UI version navigate to /farmasia-ui folder and use the command:
 
 **npm install**
+
 **npm run build**
 
 This creates the /dist folder which the compose environment mounts.
