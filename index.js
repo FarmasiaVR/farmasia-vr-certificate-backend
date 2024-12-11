@@ -30,7 +30,7 @@ const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
 app.use(middleware.sessionChecker)
 app.use(express.static(DIST_PATH))
-app.get('*', (_, res) => res.sendFile(INDEX_PATH))
+app.get('/*', (_, res) => res.sendFile(INDEX_PATH))
 
 app.listen(PORT, async () => {
   await setupDatabase()
