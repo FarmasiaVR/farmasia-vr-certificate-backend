@@ -3,13 +3,17 @@ import session from 'express-session'
 import cors from 'cors'
 import path from 'path'
 
-import { PORT } from './utils/config.js'
+import { PORT, NODE_ENV } from './utils/config.js'
 
 import setupDatabase from './utils/db.js'
 import redisConf from './utils/redis.js'
 import middleware from './utils/middleware.js'
 
 import router from './routes/router.js'
+
+// this is due to Openshift Shibboleth routing, which uses /farmasiavr
+// in Openshift, in local the /farmasiavr needs to be added
+const baseUrl = NODE_ENV === 'development' ? '/farmasiavr' : '';
 
 const app = express()
 app.use(cors())
@@ -18,10 +22,10 @@ app.use(express.urlencoded());
 app.use(middleware.requestLogger)
 app.use(session(redisConf))
 
-app.use('/api', (req, res, next) => router(req, res, next))
-app.use('/api', (_, res) => res.sendStatus(404))
+app.use(`${baseUrl}/api`, (req, res, next) => router(req, res, next))
+app.use(`${baseUrl}/api`, (_, res) => res.sendStatus(404))
 
-app.get("/health", (req, res) => {
+app.get(`${baseUrl}/health`, (req, res) => {
   res.send("Health check OK")
 })
 
@@ -29,8 +33,8 @@ const DIST_PATH = path.resolve('public')
 const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
 app.use(middleware.sessionChecker)
-app.use(express.static(DIST_PATH))
-app.get('/*', (_, res) => res.sendFile(INDEX_PATH))
+app.use(`${baseUrl}`, express.static(DIST_PATH))
+app.get(`${baseUrl}/*`, (_, res) => res.sendFile(INDEX_PATH))
 
 app.listen(PORT, async () => {
   await setupDatabase()
