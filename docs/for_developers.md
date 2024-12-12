@@ -7,6 +7,7 @@ There is a docker-compose.yml file in the repository root which can be used to a
 
 **docker compose -f docker-compose.yml up --build**
 
+Navigate to /farmasiavr endpoint to see the UI frontend, the setup is like this because in Openshift environment a Shibboleth container routes all the traffic to /farmasiavr.
 You can use CTRL+C to shutdown the composed environment. Due to docker compose volume mounts the React UI needs to be built before starting up the composed environment. (there must some easier way to do it, but this is it for now). So to have the newest UI version navigate to /farmasia-ui folder and use the command:
 
 **npm install**
@@ -22,7 +23,7 @@ The app-secrets.yaml is only as an empty version at the end of the openshift man
 
 **echo -n value-to-be-encoded | base64**
 
-The repository has a Github action in place to build and push the backend image to Docker hub repository farmasiavr/farmasiavr-backend:{github.sha}. The Github sha being the push checksum hash. Our Openshift staging app is configured to check the image repo for updates and update the deployment to use the latest image. 
+The repository has a Github action in place to build and push the backend image to Docker hub repository farmasiavr/farmasiavr-backend:{github.sha}. The Github sha being the push checksum hash. Our Openshift staging app is not yet configured to check the image repo for updates and update the deployment to use the latest image. This should be done with a ImageStream or ImageStreamTag object or by adding the app  to the clusters ArgoCD.
 
 The Docker hub repository used is within a shared account with username farmasiavr with email address farmasiavr2024@gmail.com. The staging repo is farmasiavr-backend. 
 
