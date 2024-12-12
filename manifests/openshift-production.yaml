@@ -68,24 +68,6 @@ spec:
       targetPort: 3001
   type: ClusterIP
 ---
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  name: farmasiavr-backend
-  labels:
-    type: external
-spec:
-  host: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-prod-0.k8s.it.helsinki.fi
-  path: /
-  to:
-    kind: Service
-    name: farmasiavr-backend
-  port:
-    targetPort: 8080-tcp
-  tls:
-    termination: edge  
-    insecureEdgeTerminationPolicy: Redirect
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

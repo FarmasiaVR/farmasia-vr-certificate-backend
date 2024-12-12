@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: farmasiavr-backend
-          image: farmasiavr/farmasiavr-backend:1.35
+          image: farmasiavr/farmasiavr-backend:1.36
           ports:
             - containerPort: 3001
           env:
@@ -67,24 +67,6 @@ spec:
       port: 8080
       targetPort: 3001
   type: ClusterIP
----
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  name: farmasiavr-backend
-  labels:
-    type: external
-spec:
-  host: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
-  path: /
-  to:
-    kind: Service
-    name: farmasiavr-backend
-  port:
-    targetPort: 8080-tcp
-  tls:
-    termination: edge  
-    insecureEdgeTerminationPolicy: Redirect
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
