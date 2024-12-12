@@ -39,7 +39,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
     }
 
     try {
-      const response = await axios.put("/api/certificates/create_put", {
+      const response = await axios.put("/farmasiavr/api/certificates/create_put", {
         email,
         password
       })
