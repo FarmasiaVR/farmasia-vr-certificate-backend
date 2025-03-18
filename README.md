@@ -1,10 +1,13 @@
 # FarmasiaVR backend
 This repository houses the FarmasiaVR backend. The backend is intented to send info to faculty members about students passing an educational scenario within FarmasiaVR game. The backend also has a UI for changing authentication password which the game uses when sending info of the game scenarios and ability to change the email to which the results are sent. The address to which the reports of passing a scenario are sent can also be changed in the UI. 
 
-[For development](https://github.com/FarmasiaVR/farmasia-vr-certificate-backend/blob/main/docs/for_developers.md)
+# Documentation
+
+- [Setting up a development environment and deploying](https://github.com/FarmasiaVR/farmasia-vr-certificate-backend/blob/main/docs/development_environment_and_deploying.md)
+- [Privacy policy](https://github.com/FarmasiaVR/farmasia-vr-certificate-backend/blob/main/docs/privacy_policy.md)
 
 ## Architechture
-The backend runs within the HY Openshift platform as a NodeJS container with a React Vite UI. Database being used is a MongoDB non-relational document database. Redis is used as a session storage.
+The backend runs within the HY OpenShift platform as a NodeJS container with a React Vite UI. Database being used is a MongoDB non-relational document database. Redis is used as a session storage.
 
 HY user authentication is done with Shibboleth. 
 
@@ -13,4 +16,4 @@ No sensitive information should be saved. Only the faculty email address to whic
 
 Within the backend UI an authentication for HY faculty who can manage the email address and auth password.
 
-Compliance with HY Openshift platform rules. Meaning reasonable resource requests, using the HY storage for db and HTTPS for requests outside of the cluster. 
+Compliance with HY OpenShift platform rules. Meaning reasonable resource requests, using the HY storage for db and HTTPS for requests outside of the cluster. 

@@ -10,8 +10,6 @@ RUN npm run build
 # Build the backend
 FROM node:20-alpine
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -22,9 +20,9 @@ COPY . ./
 RUN mkdir -p ./public
 COPY --from=builder /usr/src/ui/dist ./public
 
-RUN chown -R appuser:appgroup /usr/src/app
+RUN chown -R node:node /usr/src/app
 
-USER appuser
+USER node
 
 EXPOSE 3001
 

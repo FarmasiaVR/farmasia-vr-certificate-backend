@@ -4,7 +4,7 @@ services:
     image: redis
     ports:
       - 6379:6379
-    command: ["redis-server", "--appendonly", "yes"] 
+    command: ["redis-server", "--appendonly", "yes"]
   mongo:
     image: mongo
     ports:
@@ -15,12 +15,10 @@ services:
       MONGO_INITDB_DATABASE: test-database
   server:
     image: farmasiavr-backend
-    container_name: FarmasiaVR-backend
-    build: 
+    container_name: fvr-backend
+    build:
       context: .
       dockerfile: dev.Dockerfile
-    volumes:
-      - ./farmasia-ui/dist:/usr/src/app/public
     environment:
       - MONGODB_URL=mongodb://root:example@mongo:27017/
       - PORT=3001
@@ -33,4 +31,4 @@ services:
     depends_on:
       - mongo
       - redis
-  
+
