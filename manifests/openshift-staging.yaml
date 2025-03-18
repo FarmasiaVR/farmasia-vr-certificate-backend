@@ -74,7 +74,7 @@ metadata:
   name: farmasiavr-pvc
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 2Mi
@@ -123,10 +123,10 @@ spec:
         - name: farmasiavr-pvc
           mountPath: /data/db
   volumeClaimTemplates:
-  - metadata:
-      name: farmasiavr-pvc
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
+    - metadata:
+        name: farmasiavr-pvc
+      spec:
+        accessModes: ["ReadWriteOnce"]
 ---
 apiVersion: v1
 kind: Service
@@ -161,22 +161,22 @@ spec:
       securityContext:
         fsGroup: 1001490000
       containers:
-      - name: redis
-        image: redis:latest
-        securityContext:
-          runAsUser: 1001490000
-          runAsNonRoot: true
-          allowPrivilegeEscalation: false
-        ports:
-        - containerPort: 6379
-        command: ["redis-server"]
-        args: ["--appendonly", "yes", "--dir", "/data"]
-        volumeMounts:
-        - name: redis-data
-          mountPath: /data
+        - name: redis
+          image: redis:latest
+          securityContext:
+            runAsUser: 1001490000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 6379
+          command: ["redis-server"]
+          args: ["--appendonly", "yes", "--dir", "/data"]
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
       volumes:
-      - name: redis-data
-        emptyDir: {}
+        - name: redis-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -186,8 +186,8 @@ metadata:
     app: redis
 spec:
   ports:
-  - port: 6379
-    targetPort: 6379
+    - port: 6379
+      targetPort: 6379
   selector:
     app: redis
   type: ClusterIP
@@ -200,4 +200,3 @@ metadata:
     application: farmasiavr-backend
 type: Opaque
 data:
-  
