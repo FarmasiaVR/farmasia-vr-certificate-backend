@@ -6,7 +6,7 @@ This repository houses the FarmasiaVR backend. The backend is intented to send i
 - [Setting up a development environment and deploying](https://github.com/FarmasiaVR/farmasia-vr-certificate-backend/blob/main/docs/development_environment_and_deploying.md)
 - [Privacy policy](https://github.com/FarmasiaVR/farmasia-vr-certificate-backend/blob/main/docs/privacy_policy.md)
 
-## Architechture
+## Architecture
 The backend runs within the HY OpenShift platform as a NodeJS container with a React Vite UI. Database being used is a MongoDB non-relational document database. Redis is used as a session storage.
 
 HY user authentication is done with Shibboleth. 
