@@ -2,10 +2,12 @@ name: Deploy to staging
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   build-publish-deploy:
-    name: Build and Push to registry
+    name: Build and push to registry
     runs-on: ubuntu-latest
 
     steps:
