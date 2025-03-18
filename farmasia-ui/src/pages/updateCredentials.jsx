@@ -7,7 +7,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
   const [email, setEmail] = useState("")
 
   const validatePassword = () => {
-    if ( password.length < 5 && password !== '') {
+    if (password.length < 5 && password !== '') {
       alert('Password needs to be atleast 5 letters long')
       return false
     }
@@ -33,21 +33,21 @@ const UpdateCredentials = ({ setMessage, setError }) => {
       setMessage('Please provide either an email or a password')
       return
     }
-    
+
     if (!validateEmail() || !validatePassword()) {
       return
     }
 
     try {
-      const response = await axios.put("/farmasiavr/api/certificates/create_put", {
+      await axios.put("/farmasiavr/api/certificates/create_put", {
         email,
         password
       })
       setMessage('Credentials successfully changed!')
     } catch (error) {
-        console.log(error)
-        setError(true)
-        setMessage('Error updating credentials')
+      console.log(error)
+      setError(true)
+      setMessage('Error updating credentials')
     }
     setPassword('')
     setPassword2('')
@@ -62,7 +62,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
     if (event.target.value.length < 20) {
       setPassword(event.target.value)
     } else {
-        alert('Password must be less than 20 characters')
+      alert('Password must be less than 20 characters')
     }
   }
 
@@ -70,16 +70,16 @@ const UpdateCredentials = ({ setMessage, setError }) => {
     if (event.target.value.length < 20) {
       setPassword2(event.target.value)
     } else {
-        alert('Password must be less than 20 characters')
+      alert('Password must be less than 20 characters')
     }
   }
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value)
   }
-    return (
-        <>
-        <form onSubmit={handleSubmit}>
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
         <div>
           <div>
             <h3>Email address to which certificates are sent</h3>
@@ -87,7 +87,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
           </div>
           <div>
             <h3>Password for FarmasiaVR certificates</h3>
-            <input  type="password" value={password2} onChange={handlePassword2Change} />
+            <input type="password" value={password2} onChange={handlePassword2Change} />
           </div>
           <div>
             <h3>Repeat password</h3>
@@ -96,8 +96,8 @@ const UpdateCredentials = ({ setMessage, setError }) => {
           <button type="submit">Submit</button>
         </div>
       </form>
-      </>
-    )
+    </>
+  )
 }
 
 export default UpdateCredentials

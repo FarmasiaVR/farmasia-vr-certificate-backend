@@ -6,8 +6,8 @@ import hyLogo from './assets/hy_logo.gif';
 import ShowCurrent from './pages/showCurrent';
 
 function App() {
-const [message, setMessage] = useState('')
-const [error, setError] = useState(false)
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState(false)
 
   return (
     <>

@@ -11,29 +11,29 @@ const subject = "Certificate of Completion"
 // Endpoint for receiving gameplay summaries and testing
 // if the Authorization header is correct
 certificateRouter.post("/create", async (req, res) => {
-    console.log(req.body)
-    const authorization = req.get('authorization')
-    try {
-      const info = await Certificate.findOne()
-      if (authorization !== info.password) {
-        console.log("Unauthorized")
-        return res.send("Unauthorized")
-      }
-  
-      console.log("Request is authorized")
-      // Implemement logic for sending data to Pate service TBA
-      // the email address is in info.email
-      const message = "Testing Pate!"
-      
-      const target = [info.email]
-      await sendEmail(target, message, subject)
-  
-      return res.status(201).end()
+  console.log(req.body)
+  const authorization = req.get('authorization')
+  try {
+    const info = await Certificate.findOne()
+    if (authorization !== info.password) {
+      console.log("Unauthorized")
+      return res.send("Unauthorized")
     }
-    catch (e) {
-      console.log("Error in certificate creation: ", e)
-      return res.status(500).end()
-    }
+
+    console.log("Request is authorized")
+    // Implemement logic for sending data to Pate service TBA
+    // the email address is in info.email
+    const message = "Testing Pate!"
+
+    const target = [info.email]
+    await sendEmail(target, message, subject)
+
+    return res.status(201).end()
+  }
+  catch (e) {
+    console.log("Error in certificate creation: ", e)
+    return res.status(500).end()
+  }
 })
 
 
@@ -51,7 +51,7 @@ certificateRouter.put("/create_put", middleware.sessionChecker, async (req, res)
     updateCertificate.email = req.body.email
     updateCertificate.password = req.body.password
   }
-  
+
   await updateCertificate.save()
   return res.status(201).end()
 })

@@ -9,8 +9,8 @@ const ShowCurrent = () => {
 
     const handleEmailChange = (currentEmail) => {
         setEmail(currentEmail)
-      }
-    
+    }
+
     const handlePasswordChange = (currentPassword) => {
         setPassword(currentPassword)
     }
@@ -31,18 +31,18 @@ const ShowCurrent = () => {
             setHidden(true)
         } catch {
             console.error("Error fetching current credentials")
-            return 
+            return
         }
     }
 
     return (
         <>
-          {hidden &&
-          <div>
-            <h4>Current email address: {email}</h4>
-            <h4>Current password: {password}</h4>
-          </div>}
-          <button onClick={showCredentials}>Show current credentials</button>
+            {hidden &&
+                <div>
+                    <h4>Current email address: {email}</h4>
+                    <h4>Current password: {password}</h4>
+                </div>}
+            <button onClick={showCredentials}>Show current credentials</button>
         </>
     )
 }
