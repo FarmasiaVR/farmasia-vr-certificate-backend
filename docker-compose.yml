@@ -19,8 +19,6 @@ services:
     build: 
       context: .
       dockerfile: dev.Dockerfile
-    volumes:
-      - ./farmasia-ui/dist:/usr/src/app/public
     environment:
       - MONGODB_URL=mongodb://root:example@mongo:27017/
       - PORT=3001
