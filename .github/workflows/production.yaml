@@ -24,5 +24,5 @@ jobs:
 
       - name: Build
         run: |-
-          docker build --tag "farmasiavr/farmasiavr-backend-prod:$GITHUB_SHA" -f prod.Dockerfile . 
-          docker push "farmasiavr/farmasiavr-backend-prod:$GITHUB_SHA"
+          docker build --tag "farmasiavr/farmasiavr-backend-prod:${{ github.event.release.tag_name }}" -f prod.Dockerfile . 
+          docker push "farmasiavr/farmasiavr-backend-prod:${{ github.event.release.tag_name }}"
