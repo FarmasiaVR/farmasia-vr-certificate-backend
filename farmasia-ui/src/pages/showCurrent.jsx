@@ -22,7 +22,7 @@ const ShowCurrent = () => {
             return
         }
         try {
-            const response = await axios.get("/farmasiavr/api/certificates/")
+            const response = await axios.get("/api/certificates/")
             const currentEmail = response.data.email
             const currentPassword = response.data.password
             handleEmailChange(currentEmail)
