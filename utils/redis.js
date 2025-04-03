@@ -1,5 +1,5 @@
 import redis from 'redis'
-import { REDIS_URL, SESSION_SECRET } from './config.js'
+import { REDIS_URL, SESSION_SECRET, NODE_ENV } from './config.js'
 import session from 'express-session'
 import RedisStore from 'connect-redis'
 
@@ -18,7 +18,7 @@ redisClient.on('error', (err) => {
   console.error('Redis client error:', err)
 });
 
-(async () => { 
+(async () => {
   try {
     await redisClient.connect()
   } catch (err) {
@@ -37,7 +37,8 @@ const redisConf = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000
+    httpOnly: true,
+    secure: NODE_ENV === 'development' ? false : true
   }
 }
 

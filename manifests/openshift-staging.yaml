@@ -1,12 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    app.openshift.io/vcs-uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"farmasiavr-backend:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"farmasiavr-backend  \")].image","paused":"false"}]'
+  labels:
+    app.kubernetes.io/part-of: FarmasiaVR
   name: farmasiavr-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: farmasiavr-backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 100%
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -15,42 +25,70 @@ spec:
     spec:
       containers:
         - name: farmasiavr-backend
-          image: farmasiavr/farmasiavr-backend:1.39
+          image: farmasiavr-backend:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3001
+              protocol: TCP
           env:
             - name: PORT
               value: "3001"
-            - name: MONGODB_URL
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: MONGODB_URL
-            - name: DEFAULT_EMAIL
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: DEFAULT_EMAIL
-            - name: DEFAULT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: DEFAULT_PASSWORD
-            - name: REDIS_URL
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: REDIS_URL
-            - name: SESSION_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: SESSION_SECRET
-            - name: API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: API_TOKEN
+          envFrom:
+            - secretRef:
+              name: farmasiavr-secrets
+          resources:
+            limits:
+              cpu: 700m
+              memory: 400Mi
+            requests:
+              cpu: 300m
+              memory: 100Mi
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              httpHeaders:
+                - name: Host
+                  value: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
+              path: /health
+              port: 3001
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              httpHeaders:
+                - name: Host
+                  value: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
+              path: /health
+              port: 3001
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          startupProbe:
+            failureThreshold: 3
+            httpGet:
+              httpHeaders:
+                - name: Host
+                  value: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
+              path: /health
+              port: 3001
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
 ---
 apiVersion: v1
 kind: Service
@@ -74,7 +112,7 @@ metadata:
   name: farmasiavr-pvc
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 2Mi
@@ -84,6 +122,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo
+  labels:
+    app.kubernetes.io/part-of: FarmasiaVR
+  annotations:
+    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"farmasiavr-backend"}]'
+    deployment.kubernetes.io/revision: "1"
 spec:
   replicas: 1
   selector:
@@ -98,35 +141,33 @@ spec:
       containers:
         - name: mongo
           image: bitnami/mongodb:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 27017
+              protocol: TCP
           env:
             - name: MONGODB_ROOT_USER
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: farmasiavr-secrets
                   key: MONGODB_ROOT_USER
             - name: MONGODB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: farmasiavr-secrets
                   key: MONGODB_ROOT_PASSWORD
             - name: MONGODB_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: farmasiavr-secrets
                   key: MONGODB_DATABASE
           volumeMounts:
-            - name: farmasiavr-pvc
+            - name: mongodb-pvc
               mountPath: /data/db
       volumes:
-        - name: farmasiavr-pvc
-          mountPath: /data/db
-  volumeClaimTemplates:
-  - metadata:
-      name: farmasiavr-pvc
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
+        - name: mongodb-pvc
+          persistentVolumeClaim:
+            claimName: farmasiavr-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -138,6 +179,7 @@ spec:
   ports:
     - port: 27017
       targetPort: 27017
+      protocol: TCP
   selector:
     app: mongo
   clusterIP: None
@@ -148,6 +190,7 @@ metadata:
   name: redis
   labels:
     app: redis
+    app.kubernetes.io/part-of: FarmasiaVR
 spec:
   replicas: 1
   selector:
@@ -161,22 +204,28 @@ spec:
       securityContext:
         fsGroup: 1001490000
       containers:
-      - name: redis
-        image: redis:latest
-        securityContext:
-          runAsUser: 1001490000
-          runAsNonRoot: true
-          allowPrivilegeEscalation: false
-        ports:
-        - containerPort: 6379
-        command: ["redis-server"]
-        args: ["--appendonly", "yes", "--dir", "/data"]
-        volumeMounts:
-        - name: redis-data
-          mountPath: /data
+        - name: redis
+          image: redis:latest
+          securityContext:
+            runAsUser: 1001490000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          command:
+            - redis-server
+          args:
+            - --appendonly
+            - "yes"
+            - --dir
+            - /data
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
       volumes:
-      - name: redis-data
-        emptyDir: {}
+        - name: redis-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -186,18 +235,76 @@ metadata:
     app: redis
 spec:
   ports:
-  - port: 6379
-    targetPort: 6379
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP
   selector:
     app: redis
   type: ClusterIP
+  ipFamilies:
+    - IPv4
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    type: external
+  name: farmasiavr-backend
+spec:
+  host: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
+  path: /
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: farmasiavr-backend
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: farmasiavr-backend
+spec:
+  lookupPolicy:
+    local: true
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: farmasiavr-backend
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: farmasiavr-backend:latest
+  runPolicy: Serial
+  source:
+    contextDir: /
+    git:
+      ref: main
+      uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
+    type: Git
+  strategy:
+    dockerStrategy: {}
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+    - gitlab:
+        secretReference:
+          name: farmasiavr-backend-generic-webhook-secret
+      type: GitLab
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: app-secrets
+  name: farmasiavr-secrets
   labels:
     application: farmasiavr-backend
 type: Opaque
 data:
-  

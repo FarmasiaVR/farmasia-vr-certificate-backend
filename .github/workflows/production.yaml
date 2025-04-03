@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: read
+
 jobs:
   build-push:
     name: Build and Push to registry
@@ -21,5 +24,26 @@ jobs:
 
       - name: Build
         run: |-
-          docker build --tag "farmasiavr/farmasiavr-backend-prod:$GITHUB_SHA" -f prod.Dockerfile . 
-          docker push "farmasiavr/farmasiavr-backend-prod:$GITHUB_SHA"
+          docker build --tag "farmasiavr/farmasiavr-backend-prod:${{ github.event.release.tag_name }}" -f prod.Dockerfile .
+          docker push "farmasiavr/farmasiavr-backend-prod:${{ github.event.release.tag_name }}"
+  gitlab-tag:
+    name: Push release tag to version.helsinki.fi
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+        
+      - name: Set up git config
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+        
+      - name: Push to GitLab
+        env:
+          HELSINKIFI_TOKEN: ${{ secrets.HELSINKIFI_TOKEN }}
+        run: |
+          git remote add gitlab https://oauth2:${HELSINKIFI_TOKEN}@version.helsinki.fi/farmasiavr/farmasia-vr-certificate-backend.git
+          git push --tags -u gitlab main

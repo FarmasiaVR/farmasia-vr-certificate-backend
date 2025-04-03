@@ -11,8 +11,8 @@ import middleware from './utils/middleware.js'
 
 import router from './routes/router.js'
 
-// this is due to Openshift Shibboleth routing, which uses /farmasiavr
-// in Openshift, in local the /farmasiavr needs to be added
+// this is due to OpenShift Shibboleth routing, which uses /farmasiavr
+// in OpenShift, in local the /farmasiavr needs to be added
 const baseUrl = NODE_ENV === 'development' ? '/farmasiavr' : '';
 
 const app = express()
