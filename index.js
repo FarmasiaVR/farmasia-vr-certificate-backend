@@ -18,7 +18,7 @@ const baseUrl = NODE_ENV === 'development' ? '/farmasiavr' : '';
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
 app.use(middleware.requestLogger)
 app.use(session(redisConf))
 
