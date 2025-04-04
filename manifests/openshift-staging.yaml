@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
+    app.openshift.io/vcs-ref: main
     app.openshift.io/vcs-uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
     image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"farmasiavr-backend:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"farmasiavr-backend  \")].image","paused":"false"}]'
   labels:
@@ -22,10 +23,12 @@ spec:
       labels:
         app: farmasiavr-backend
         application: farmasiavr-backend
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
     spec:
       containers:
         - name: farmasiavr-backend
-          image: farmasiavr-backend:latest
+          image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3001

@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: farmasiavr-backend
   annotations:
+    app.openshift.io/vcs-ref: v1.0
     app.openshift.io/vcs-uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
   labels:
     app.kubernetes.io/part-of: FarmasiaVR
@@ -21,10 +22,12 @@ spec:
       labels:
         app: farmasiavr-backend
         application: farmasiavr-backend
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
     spec:
       containers:
         - name: farmasiavr-backend
-          image: farmasiavr-backend:v1.0
+          image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend:v1.0
           ports:
             - containerPort: 3001
               protocol: TCP
