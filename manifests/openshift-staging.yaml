@@ -29,7 +29,7 @@ spec:
       containers:
         - name: farmasiavr-backend
           image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 3001
               protocol: TCP
