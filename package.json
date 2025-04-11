@@ -29,6 +29,7 @@
     "express-session": "^1.18.1",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.3",
+    "pg": "^8.14.1",
     "redis": "^4.7.0",
     "unfuck-utf8-headers-middleware": "^1.0.1"
   },
