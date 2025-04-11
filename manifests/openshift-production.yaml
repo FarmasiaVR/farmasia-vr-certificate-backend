@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: farmasiavr-backend
-          image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend:v0.2
+          image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend-prod:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
@@ -154,7 +154,7 @@ spec:
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: farmasiavr-backend
+  name: farmasiavr-backend-prod
 spec:
   lookupPolicy:
     local: true
@@ -170,14 +170,18 @@ spec:
   source:
     contextDir: /
     git:
-      ref: v0.2
+      ref: v0.2.2
       uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
     type: Git
   strategy:
-    dockerStrategy: {}
+    dockerStrategy:
+      dockerfilePath: prod.Dockerfile
     type: Docker
-    dockerfilePath: prod.Dockerfile
   successfulBuildsHistoryLimit: 5
+  output:
+    to:
+      kind: ImageStreamTag
+      name: farmasiavr-backend-prod:latest
   triggers:
     - gitlab:
         secretReference:
