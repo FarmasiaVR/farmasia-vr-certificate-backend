@@ -38,8 +38,8 @@ certificateRouter.post("/create", async (req, res) => {
 
 
 certificateRouter.put("/create_put", middleware.sessionChecker, async (req, res) => {
-  const updateEmail = null
-  const updatePassword = null
+  var updateEmail = null
+  var updatePassword = null
 
   if (req.body.email != '') {
     updateEmail = req.body.email
@@ -55,8 +55,8 @@ certificateRouter.put("/create_put", middleware.sessionChecker, async (req, res)
 })
 
 certificateRouter.get("/", async (req, res) => {
-  const certificateInfo = await Certificate.findOne({})
-  return res.send(certificateInfo).end()
+  const certificateInfo = await db_query("SELECT email, password FROM users WHERE id = 1")
+  return res.send(certificateInfo.rows[0]).end()
 })
 
 export default certificateRouter
