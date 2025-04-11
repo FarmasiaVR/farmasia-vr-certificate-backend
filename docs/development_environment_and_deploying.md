@@ -1,7 +1,7 @@
 # Development environments and deploying
 
 ## Local development environment
-There is a docker-compose.yml file in the repository root to aid local development. 
+There is a docker-compose.yml file in the repository root to aid local development, but it assumes you have Postgres installed locally.
 
 The React UI needs to be built before starting up the composed environment:
 
@@ -28,14 +28,12 @@ You can use CTRL+C to shutdown the composed environment.
 ## OpenShift staging
 The `manifests/` directory has a YAML file named `openshift-staging.yaml` which has all the relevant information to setup the required deployments and services. As the application uses the clusters Shibboleth container to route traffic no external routes are required as manifests. 
 
-The `app-secrets.yaml` is only as an empty version at the end of the OpenShift manifests. To populate these secret values they need to be base64 encoded. The keys can be plain regular text but the values are encoded like this (using bash terminal):
+The `app-secrets.yaml.dist` is only provided as an empty version. To populate these secret values they need to be base64 encoded. The keys can be plain regular text but the values are encoded like this (using bash terminal):
 
 `echo -n value-to-be-encoded | base64`
 
-The repository has a GitHub action in place to build and push the backend image to Docker hub repository `farmasiavr/farmasiavr-backend:{github.sha}`. The GitHub SHA being the push checksum hash. Our OpenShift staging app is not yet configured to check the image repo for updates and update the deployment to use the latest image. This should be done with a ImageStream or ImageStreamTag object or by adding the app to the clusters ArgoCD.
-
-The Docker Hub repository used is within a shared account with username `farmasiavr` with email address `farmasiavr2024@gmail.com`. The staging repo is `farmasiavr-backend`.
+The repository has a GitHub action in place to push the changes to the University's OpenShift testing cluster, where a BuildConfig builds a new image. The deployment needs to be restarted from the OpenShift console for the changes to take effect.
 
 ## OpenShift production
-Same instructions apply as with staging, but the GitHub actions make adjustments to the Docker image only on releases in GitHub. The Docker Hub repository used is `farmasiavr-backend-prod`. The OpenShift manifest to be used is `openshift-production.yaml`.
+Same instructions apply as with staging, but the GitHub actions only push to the production cluster on releases in GitHub. The OpenShift manifest to be used is `openshift-production.yaml`. Secrets need to be set appropriately based on `app-secrets-prod.yaml.dist`. The BuildConfig's reference to a VCS `ref` should be updated to the tag wanted in production.
 
