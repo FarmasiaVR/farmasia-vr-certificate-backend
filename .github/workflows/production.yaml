@@ -42,8 +42,13 @@ jobs:
           git config --global user.email "actions@github.com"
         
       - name: Push to GitLab
+        continue-on-error: true
         env:
           HELSINKIFI_TOKEN: ${{ secrets.HELSINKIFI_TOKEN }}
         run: |
           git remote add gitlab https://oauth2:${HELSINKIFI_TOKEN}@version.helsinki.fi/farmasiavr/farmasia-vr-certificate-backend.git
           git push gitlab --tags
+      
+      - name: Success
+        run: |
+          exit 0
