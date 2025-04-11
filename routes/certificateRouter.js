@@ -1,7 +1,7 @@
 import express from 'express'
-import Certificate from '../models/certificate.js'
 import sendEmail from '../mailer/pate.js'
 import middleware from '../utils/middleware.js'
+import {db_query} from '../utils/db.js'
 
 const certificateRouter = express()
 
@@ -14,8 +14,8 @@ certificateRouter.post("/create", async (req, res) => {
   console.log(req.body)
   const authorization = req.get('authorization')
   try {
-    const info = await Certificate.findOne()
-    if (authorization !== info.password) {
+    const info = await db_query('SELECT email, password FROM users WHERE id = 1')
+    if (authorization !== info.rows[0].password) {
       console.log("Unauthorized")
       return res.send("Unauthorized")
     }
@@ -25,7 +25,7 @@ certificateRouter.post("/create", async (req, res) => {
     // the email address is in info.email
     const message = "Testing Pate!"
 
-    const target = [info.email]
+    const target = [info.rows[0].email]
     await sendEmail(target, message, subject)
 
     return res.status(201).end()
@@ -38,21 +38,19 @@ certificateRouter.post("/create", async (req, res) => {
 
 
 certificateRouter.put("/create_put", middleware.sessionChecker, async (req, res) => {
+  const updateEmail = null
+  const updatePassword = null
 
-  const updateCertificate = await Certificate.findOne()
-
-  if (req.body.email === '') {
-    updateCertificate.password = req.body.password
+  if (req.body.email != '') {
+    updateEmail = req.body.email
   }
-  else if (req.body.password === '') {
-    updateCertificate.email = req.body.email
-  }
-  else {
-    updateCertificate.email = req.body.email
-    updateCertificate.password = req.body.password
+  if (req.body.password != '') {
+    updatePassword = req.body.password
   }
 
-  await updateCertificate.save()
+  const answer = await db_query('UPDATE users SET email = COALESCE($1, email), password = COALESCE($2, password) WHERE id = 1 RETURNING email', [updateEmail, updatePassword])
+  console.log('changed email (and possibly pass): ', answer.rows[0])  
+  
   return res.status(201).end()
 })
 

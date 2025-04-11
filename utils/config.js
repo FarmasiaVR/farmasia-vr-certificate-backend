@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 export const PORT = process.env.PORT || 3001
-export const MONGODB_URL = process.env.MONGODB_URL
+export const PGCONNECTION = process.env.PGCONNECTION
 export const DEFAULT_EMAIL = process.env.DEFAULT_EMAIL
 export const DEFAULT_PASSWORD = process.env.DEFAULT_PASSWORD
 
