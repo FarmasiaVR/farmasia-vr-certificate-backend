@@ -4,7 +4,10 @@ import pg from 'pg'
 const { Client } = pg
 
 const client = new Client({
-  PGCONNECTION
+  connectionString: PGCONNECTION,
+  ssl: {
+    rejectUnauthorized: true
+  }
 })
 
 await client.connect().then(() => {
