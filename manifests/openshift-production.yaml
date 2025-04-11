@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: farmasiavr-backend
   annotations:
-    app.openshift.io/vcs-ref: v1.0
+    app.openshift.io/vcs-ref: v0.2
     app.openshift.io/vcs-uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
   labels:
     app.kubernetes.io/part-of: FarmasiaVR
@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: farmasiavr-backend
-          image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend:v1.0
+          image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend:v0.2
           ports:
             - containerPort: 3001
               protocol: TCP
@@ -67,83 +67,6 @@ spec:
       port: 8080
       targetPort: 3001
   type: ClusterIP
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: farmasiavr-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Mi
-  storageClassName: pomppa25-new
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mongo
-  labels:
-    app.kubernetes.io/part-of: FarmasiaVR
-  annotations:
-    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"farmasiavr-backend"}]'
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mongo
-  template:
-    metadata:
-      labels:
-        app: mongo
-        application: farmasiavr-backend
-    spec:
-      containers:
-        - name: mongo
-          image: bitnami/mongodb:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 27017
-              protocol: TCP
-          env:
-            - name: MONGODB_ROOT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: farmasiavr-secrets
-                  key: MONGODB_ROOT_USER
-            - name: MONGODB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: farmasiavr-secrets
-                  key: MONGODB_ROOT_PASSWORD
-            - name: MONGODB_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: farmasiavr-secrets
-                  key: MONGODB_DATABASE
-          volumeMounts:
-            - name: farmasiavr-pvc
-              mountPath: /data/db
-      volumes:
-        - name: farmasiavr-pvc
-          persistentVolumeClaim:
-            claimName: farmasiavr-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongo
-  labels:
-    application: farmasiavr-backend
-spec:
-  ports:
-    - port: 27017
-      targetPort: 27017
-      protocol: TCP
-  selector:
-    app: mongo
-  clusterIP: None
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -245,12 +168,13 @@ spec:
   source:
     contextDir: /
     git:
-      ref: main
+      ref: v0.2
       uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
     type: Git
   strategy:
     dockerStrategy: {}
     type: Docker
+    dockerfilePath: prod.Dockerfile
   successfulBuildsHistoryLimit: 5
   triggers:
     - gitlab:

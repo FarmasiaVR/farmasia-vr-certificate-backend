@@ -1,2 +1,8 @@
 node_modules
 manual_request
+.git
+.gitignore
+app-secrets.yaml
+app-secrets-prod.yaml
+manifests
+docs
