@@ -19,6 +19,7 @@ await client.connect().then(() => {
 
 // Creating the initial info in db with env values, if none exist
 async function setupDatabase() {
+  await client.query('CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, email TEXT UNIQUE, password TEXT)')
   const res = await client.query('SELECT email FROM users WHERE id = 1')
   if (res.rows.length === 0) {
     const sql = 'INSERT INTO users(email, password) VALUES ($1, $2) RETURNING email'
