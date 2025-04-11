@@ -28,6 +28,7 @@ spec:
       containers:
         - name: farmasiavr-backend
           image: image-registry.openshift-image-registry.svc:5000/ohtuprojekti-staging/farmasiavr-backend:v0.2
+          imagePullPolicy: Always
           ports:
             - containerPort: 3001
               protocol: TCP
@@ -36,7 +37,7 @@ spec:
               value: "3001"
           envFrom:
             - secretRef:
-              name: farmasiavr-secrets
+                name: farmasiavr-prod-secrets
           resources:
             limits:
               cpu: 700m
@@ -74,6 +75,7 @@ metadata:
   name: redis
   labels:
     app: redis
+    app.kubernetes.io/part-of: FarmasiaVR
     application: farmasiavr-backend
 spec:
   replicas: 1
@@ -181,12 +183,3 @@ spec:
         secretReference:
           name: farmasiavr-backend-prod-generic-webhook-secret
       type: GitLab
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: farmasiavr-prod-secrets
-  labels:
-    application: farmasiavr-backend
-type: Opaque
-data:
