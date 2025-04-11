@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: farmasiavr-backend
   annotations:
-    app.openshift.io/vcs-ref: v0.2
+    app.openshift.io/vcs-ref: v0.2.3
     app.openshift.io/vcs-uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
   labels:
     app.kubernetes.io/part-of: FarmasiaVR
@@ -170,7 +170,7 @@ spec:
   source:
     contextDir: /
     git:
-      ref: v0.2.2
+      ref: v0.2.3
       uri: https://github.com/FarmasiaVR/farmasia-vr-certificate-backend
     type: Git
   strategy:
