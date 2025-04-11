@@ -38,7 +38,7 @@ spec:
               value: "3001"
           envFrom:
             - secretRef:
-              name: farmasiavr-secrets
+                name: farmasiavr-secrets
           resources:
             limits:
               cpu: 700m
@@ -224,12 +224,3 @@ spec:
         secretReference:
           name: farmasiavr-backend-generic-webhook-secret
       type: GitLab
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: farmasiavr-secrets
-  labels:
-    application: farmasiavr-backend
-type: Opaque
-data:
