@@ -1,0 +1,54 @@
+#
+# This file is for use with the Shibboleth configuration of containers 
+# quay.io/tike/openshift-sp-shibd:prod AND quay.io/tike/openshift-sp-httpd:prod
+#
+# It is a ConfigMap object that sets the proper ProxyPass settings for FarmasiaVR
+# for the httpd container, where it is mounted at /opt/app-root/etc/httpd.d.
+#
+# You will need to define <SERVER-NAME> as needed for your endpoint.
+# This config assumes that the farmasiavr container is reachable at http://farmasiavr-backend:8080
+#
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: httpd-config
+data:
+  shib.conf: |
+    ServerName <SERVER-NAME>
+    UseCanonicalName On
+    SSLProxyEngine On
+    ProxyPreserveHost Off
+
+    <Location /farmasiavr-backend/api/certificates/create>
+        Require all granted
+        ProxyPreserveHost On
+        ProxyPass http://farmasiavr-backend:8080/api/certificates/create
+        ProxyPassReverse http://farmasiavr-backend:8080/api/certificates/create
+    </Location>
+
+    <Location /farmasiavr>
+        AuthType shibboleth
+        ShibUseHeaders On
+        ShibRequestSetting requireSession 1
+        require shib-session 
+
+        ProxyPreserveHost On
+        ProxyPass http://farmasiavr-backend:8080 retry=0 disablereuse=On
+        ProxyPassReverse http://farmasiavr-backend:8080
+    </Location>
+
+    <Location /farmasiavr/assets>
+        AuthType shibboleth
+        ShibUseHeaders On
+        ShibRequestSetting requireSession 1
+        require shib-session 
+        
+        ProxyPreserveHost On
+        ProxyPass http://farmasiavr-backend:8080/assets/
+        ProxyPassReverse http://farmasiavr-backend:8080/assets/
+    </Location>
+
+
+    ProxyPass "/Shibboleth.sso" !
+    ProxyPass "/shibboleth-sp" !
