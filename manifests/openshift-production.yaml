@@ -166,7 +166,7 @@ metadata:
 spec:
   failedBuildsHistoryLimit: 5
   nodeSelector: null
-  runPolicy: Serial
+  runPolicy: SerialLatestOnly
   source:
     contextDir: /
     git:
