@@ -45,4 +45,4 @@ jobs:
           HELSINKIFI_TOKEN: ${{ secrets.HELSINKIFI_TOKEN }}
         run: |
           git remote add gitlab https://oauth2:${HELSINKIFI_TOKEN}@version.helsinki.fi/farmasiavr/farmasia-vr-certificate-backend.git
-          git push -u gitlab main
+          git push -u gitlab main --force
