@@ -4,6 +4,7 @@ import Notification from './pages/notification';
 import UpdateCredentials from './pages/updateCredentials';
 import hyLogo from './assets/hy_logo.gif';
 import ShowCurrent from './pages/showCurrent';
+import Version from './pages/version';
 
 function App() {
   const [message, setMessage] = useState('')
@@ -19,6 +20,7 @@ function App() {
         <h1>FarmasiaVR</h1>
         <UpdateCredentials setMessage={setMessage} setError={setError} />
         <ShowCurrent />
+        <Version />
       </div>
     </>
   )

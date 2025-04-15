@@ -29,6 +29,10 @@ app.get(`${baseUrl}/health`, (req, res) => {
   res.send("Health check OK")
 })
 
+app.get(`${baseUrl}/version`, (req, res) => {
+  res.send(process.env.npm_package_version)
+})
+
 const DIST_PATH = path.resolve('public')
 const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
