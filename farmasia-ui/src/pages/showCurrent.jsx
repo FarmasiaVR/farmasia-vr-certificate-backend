@@ -19,6 +19,7 @@ const ShowCurrent = () => {
         e.preventDefault()
         if (hidden) {
             setHidden(false)
+            this.value == "Hide current credentials"
             return
         }
         try {
@@ -29,6 +30,7 @@ const ShowCurrent = () => {
             handlePasswordChange(currentPassword)
             console.log(currentEmail)
             setHidden(true)
+            this.value == "Show current credentials"
         } catch {
             console.error("Error fetching current credentials")
             return
