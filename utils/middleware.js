@@ -15,15 +15,14 @@ const sessionChecker = (req, res, next) => {
 
   const { hygroupcn } = req.headers
   const iamGroups = parseIamGroups(hygroupcn)
-  
-  const authorized = req.user["iamGroups"].includes("grp-farmasiavr-admin")
 
   const user = {
     iamGroups,
-    authorized,
   }
 
   req.user = user
+
+  const authorized = req.user["iamGroups"].includes("grp-farmasiavr-admin")
 
   try {
     if (!authorized) {
