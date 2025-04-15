@@ -169,26 +169,6 @@ spec:
   ipFamilies:
     - IPv4
 ---
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  labels:
-    type: external
-  name: farmasiavr-backend
-spec:
-  host: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
-  path: /
-  port:
-    targetPort: 8080-tcp
-  tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
-  to:
-    kind: Service
-    name: farmasiavr-backend
-    weight: 100
-  wildcardPolicy: None
----
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
