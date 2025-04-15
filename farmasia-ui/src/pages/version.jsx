@@ -5,12 +5,13 @@ import { useState } from 'react'
 const ShowCurrent = () => {
     const [hidden, setHidden] = useState(false)
     const [version, setVersion] = useState('')
+    const [verb, setVerb] = useState("Show")
 
     const showCredentials = async (e) => {
         e.preventDefault()
         if (hidden) {
             setHidden(false)
-            this.value == "Hide current version"
+            setVerb("Show")
             return
         }
         try {
@@ -19,7 +20,7 @@ const ShowCurrent = () => {
             setVersion(version)
             console.log(version)
             setHidden(true)
-            this.value == "Show current version"
+            setVerb("Hide")
         } catch {
             console.error("Error fetching current version")
             return
@@ -32,7 +33,7 @@ const ShowCurrent = () => {
                 <div>
                     <h4>Current version: {version}</h4>
                 </div>}
-            <button onClick={showCredentials}>Show current version</button>
+            <button onClick={showCredentials}>{verb} current version</button>
         </>
     )
 }

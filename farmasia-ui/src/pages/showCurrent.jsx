@@ -6,6 +6,7 @@ const ShowCurrent = () => {
     const [hidden, setHidden] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [verb, setVerb] = useState("Show")
 
     const handleEmailChange = (currentEmail) => {
         setEmail(currentEmail)
@@ -19,7 +20,7 @@ const ShowCurrent = () => {
         e.preventDefault()
         if (hidden) {
             setHidden(false)
-            this.value == "Hide current credentials"
+            setVerb("Show")
             return
         }
         try {
@@ -30,7 +31,7 @@ const ShowCurrent = () => {
             handlePasswordChange(currentPassword)
             console.log(currentEmail)
             setHidden(true)
-            this.value == "Show current credentials"
+            setVerb("Hide")
         } catch {
             console.error("Error fetching current credentials")
             return
@@ -44,7 +45,7 @@ const ShowCurrent = () => {
                     <h4>Current email address: {email}</h4>
                     <h4>Current password: {password}</h4>
                 </div>}
-            <button onClick={showCredentials}>Show current credentials</button>
+            <button onClick={showCredentials}>{verb} current credentials</button>
         </>
     )
 }
