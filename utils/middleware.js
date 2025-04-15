@@ -8,7 +8,7 @@ const parseIamGroups = (iamGroups) =>
 const sessionChecker = (req, res, next) => {
   if (NODE_ENV === 'development') {
     req.user = {
-      hygroupcn: "test",
+      hygroupcn: "grp-farmasiavr-admin",
     }
     return next()
   }
