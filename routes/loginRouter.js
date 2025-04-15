@@ -6,7 +6,7 @@ const loginRouter = express()
 loginRouter.get('/', async (req, res) => {
   try {
     logger.info('Reached login router')
-    if (!req.user) {
+    if (!req.user || !req.user["iamGroups"].includes("grp-farmasiavr-admin")) {
       return res.status(401).send('Unauthorized')
     }
     logger.info('Req user:', req.user)
@@ -18,7 +18,7 @@ loginRouter.get('/', async (req, res) => {
 })
 
 loginRouter.get('/logout', async (req, res, next) => {
-  req.logout((err) => {
+  req.session.destroy((err) => {
     if (err) return next(err)
   })
 
