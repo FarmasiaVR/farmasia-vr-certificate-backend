@@ -15,18 +15,17 @@ const sessionChecker = (req, res, next) => {
 
   const { hygroupcn } = req.headers
   const iamGroups = parseIamGroups(hygroupcn)
-
-  const user = {
-    iamGroups,
-  }
-
-  req.user = user
   
   const authorized = req.user["iamGroups"].includes("grp-farmasiavr-admin")
 
+  const user = {
+    iamGroups,
+    authorized,
+  }
+
+  req.user = user
+
   try {
-    logger.info('Reached login router')
-    logger.info('Req user:', req.user)
     if (!authorized) {
       return res.status(401).send('Unauthorized. Your University of Helsinki AD account is not a member of the grp-farmasiavr-admin IAM group.')
     }

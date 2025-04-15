@@ -36,6 +36,7 @@ certificateRouter.post("/create", async (req, res) => {
   }
 })
 
+certificateRouter.use(middleware.sessionChecker)
 
 certificateRouter.put("/create_put", middleware.sessionChecker, async (req, res) => {
   var updateEmail = null
