@@ -21,6 +21,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 app.use(middleware.requestLogger)
 app.use(session(redisConf))
+app.use(middleware.sessionChecker)
 
 app.use(`${baseUrl}/api`, (req, res, next) => router(req, res, next))
 app.use(`${baseUrl}/api`, (_, res) => res.sendStatus(404))
@@ -36,7 +37,6 @@ app.get(`${baseUrl}/version`, (req, res) => {
 const DIST_PATH = path.resolve('public')
 const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
-app.use(middleware.sessionChecker)
 app.use(`${baseUrl}`, express.static(DIST_PATH))
 app.get(`${baseUrl}/*`, (_, res) => res.sendFile(INDEX_PATH))
 

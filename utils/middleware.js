@@ -21,7 +21,20 @@ const sessionChecker = (req, res, next) => {
   }
 
   req.user = user
-  return next()
+  
+  authorized = req.user["iamGroups"].includes("grp-farmasiavr-admin")
+
+  try {
+    logger.info('Reached login router')
+    logger.info('Req user:', req.user)
+    if (!authorized) {
+      return res.status(401).send('Unauthorized. Your University of Helsinki AD account is not a member of the grp-farmasiavr-admin IAM group.')
+    }
+    return next()
+  } catch (error) {
+    console.error('Error in login route:', error)
+    return res.status(500).send('Internal Server Error')
+  }
 }
 
 const requestLogger = (request, response, next) => {
