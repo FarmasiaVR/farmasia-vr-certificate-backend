@@ -21,14 +21,15 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 app.use(middleware.requestLogger)
 app.use(session(redisConf))
-app.use(middleware.sessionChecker)
-
-app.use(`${baseUrl}/api`, (req, res, next) => router(req, res, next))
-app.use(`${baseUrl}/api`, (_, res) => res.sendStatus(404))
 
 app.get(`${baseUrl}/health`, (req, res) => {
   res.send("Health check OK")
 })
+
+app.use(middleware.sessionChecker)
+
+app.use(`${baseUrl}/api`, (req, res, next) => router(req, res, next))
+app.use(`${baseUrl}/api`, (_, res) => res.sendStatus(404))
 
 app.get(`${baseUrl}/version`, (req, res) => {
   res.send(process.env.npm_package_version)
