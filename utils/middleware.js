@@ -22,7 +22,7 @@ const sessionChecker = (req, res, next) => {
 
   req.user = user
   
-  authorized = req.user["iamGroups"].includes("grp-farmasiavr-admin")
+  const authorized = req.user["iamGroups"].includes("grp-farmasiavr-admin")
 
   try {
     logger.info('Reached login router')
