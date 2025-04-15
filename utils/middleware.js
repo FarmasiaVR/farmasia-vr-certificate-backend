@@ -15,6 +15,7 @@ const sessionChecker = (req, res, next) => {
 
   const { hygroupcn } = req.headers
   logger.info('HYGroupcn: ', hygroupcn)
+  logger.info('Headers:', req.headers)
   const iamGroups = parseIamGroups(hygroupcn)
   logger.info('IAM groups:', iamGroups)
 
