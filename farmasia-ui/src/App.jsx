@@ -20,6 +20,7 @@ function App() {
         <h1>FarmasiaVR</h1>
         <UpdateCredentials setMessage={setMessage} setError={setError} />
         <ShowCurrent />
+        <br />
         <Version />
       </div>
     </>
