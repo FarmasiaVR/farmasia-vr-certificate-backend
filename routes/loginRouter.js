@@ -4,9 +4,11 @@ const loginRouter = express()
 
 loginRouter.get('/', async (req, res) => {
   try {
+    logger.info('Reached login router')
     if (!req.user) {
       return res.status(401).send('Unauthorized')
     }
+    logger.info('Req user:', req.user)
     return res.send(req.user)
   } catch (error) {
     console.error('Error in login route:', error)
