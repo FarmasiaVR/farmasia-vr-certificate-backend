@@ -7,6 +7,7 @@ metadata:
     image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"farmasiavr-backend:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"farmasiavr-backend  \")].image","paused":"false"}]'
   labels:
     app.kubernetes.io/part-of: FarmasiaVR
+    app.openshift.io/runtime: nodejs
   name: farmasiavr-backend
 spec:
   replicas: 1
@@ -116,6 +117,7 @@ metadata:
   labels:
     app: redis
     app.kubernetes.io/part-of: FarmasiaVR
+    app.openshift.io/runtime: redis
 spec:
   replicas: 1
   selector:
