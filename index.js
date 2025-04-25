@@ -27,7 +27,7 @@ app.use(middleware.requestLogger)
 app.use(session(redisConf))
 app.use(helmet());
 app.use(lusca({
-  csrf: true,
+  csrf: false,
   csp: {policy: { "default-src": "\'self\'", "img-src": "\'self\' data:"}},
   xframe: 'SAMEORIGIN',
   p3p: false,
@@ -49,6 +49,8 @@ const limiter = rateLimit({
     sendCommand: (...args) => redisClient.sendCommand(args)
   }),
 })
+
+app.use(limiter)
 
 app.get(`${baseUrl}/health`, (req, res) => {
   res.send("Health check OK")
