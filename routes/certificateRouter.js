@@ -22,11 +22,29 @@ certificateRouter.post("/create", async (req, res) => {
 
     console.log("Authorized")
 
-    const message = `A student with the email address ${req.body.email} has completed scenario <b>${req.body.scenario}</b> in FarmasiaVR.
-    
-    Steps taken and points: ${req.body.progress}
+    const student_email = req.body.email.toString();
 
-    General mistakes made: ${req.body.mistakes}`;
+    const scenario_name = req.body.scenario.toString();
+
+    var mistakes = req.body.mistakes.reduce((list, item) => list.concat(`<li>${item.name.toString()} \
+                                                                              <b>-${item.deducted.toString()} points</b>\
+                                                                         </li>`), '');
+    var progress = req.body.progress.reduce((list, item) => list.concat(`<li>${item.name.toString()}</li>\
+                                                                              <ul><li>Points: <b>${item.awardedPoints.toString()}</li>\
+                                                                                  <li>Completed: ${item.completed.toString()}</li>\
+                                                                                  ${item.timeTaken == null ? '' : `<li>Time taken: ${item.timeTaken.toString()}</li>`}\
+                                                                                  ${item.mistakes != 0 ? `<li>Task mistakes:</li><ul>${item.mistakes.reduce((accumulator, next) => accumulator.concat(`<li>${next.name.toString()} <b>-${next.deducted.toString()} points</b></li>`), '')}</ul>` : ''}\
+                                                                              </ul>`), '')
+
+    const message = `A student with the email address <i>${student_email}</i> has completed scenario <b>${scenario_name}</b> in FarmasiaVR.
+    
+    Steps taken and points:
+    
+    <ul>${progress}</ul>
+
+    General mistakes made:
+    
+    <ul>${mistakes}</ul>`;
 
     const target = [info.rows[0].email]
     await sendEmail(target, message, subject)
