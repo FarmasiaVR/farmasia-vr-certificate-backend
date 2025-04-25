@@ -22,7 +22,11 @@ certificateRouter.post("/create", async (req, res) => {
 
     console.log("Authorized")
 
-    const message = "A student has completed a scenario inside FarmasiaVR. Results:" + req.body.toString();
+    const message = `A student with the email address ${req.body.email} has completed scenario <b>${req.body.scenario}</b> in FarmasiaVR.
+    
+    Steps taken and points: ${req.body.progress}
+
+    General mistakes made: ${req.body.mistakes}`;
 
     const target = [info.rows[0].email]
     await sendEmail(target, message, subject)
