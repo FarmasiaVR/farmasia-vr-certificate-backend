@@ -42,4 +42,7 @@ const redisConf = {
   }
 }
 
-export default redisConf
+export {
+  redisConf,
+  redisClient,
+}

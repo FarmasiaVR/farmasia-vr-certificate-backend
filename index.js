@@ -2,13 +2,15 @@ import express from 'express'
 import session from 'express-session'
 import cors from 'cors'
 import path from 'path'
+import { rateLimit } from 'express-rate-limit'
+import { RedisStore } from 'rate-limit-redis'
 import helmet from 'helmet'
 import lusca from 'lusca'
 
 import { PORT, NODE_ENV } from './utils/config.js'
 
 import setupDatabase from './utils/db.js'
-import redisConf from './utils/redis.js'
+import { redisConf, redisClient } from './utils/redis.js'
 import middleware from './utils/middleware.js'
 
 import router from './routes/router.js'
@@ -25,7 +27,7 @@ app.use(middleware.requestLogger)
 app.use(session(redisConf))
 app.use(helmet());
 app.use(lusca({
-  csrf: true,
+  csrf: false,
   csp: {policy: { "default-src": "\'self\'", "img-src": "\'self\' data:"}},
   xframe: 'SAMEORIGIN',
   p3p: false,
@@ -35,6 +37,20 @@ app.use(lusca({
   referrerPolicy: 'same-origin'
 }));
 app.disable('x-powered-by');
+
+const limiter = rateLimit({
+  // Rate limiter configuration
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window`
+  standardHeaders: false, // Disable `RateLimit-*` headers
+  legacyHeaders: false, // Disable `X-RateLimit-*` headers
+
+  store: new RedisStore({
+    sendCommand: (...args) => redisClient.sendCommand(args)
+  }),
+})
+
+app.use(limiter)
 
 app.get(`${baseUrl}/health`, (req, res) => {
   res.send("Health check OK")
