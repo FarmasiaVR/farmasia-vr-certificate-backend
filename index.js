@@ -4,6 +4,8 @@ import cors from 'cors'
 import path from 'path'
 import { rateLimit } from 'express-rate-limit'
 import { RedisStore } from 'rate-limit-redis'
+import helmet from 'helmet'
+import lusca from 'lusca'
 
 import { PORT, NODE_ENV } from './utils/config.js'
 
@@ -23,6 +25,18 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 app.use(middleware.requestLogger)
 app.use(session(redisConf))
+app.use(helmet());
+app.use(lusca({
+  csrf: true,
+  csp: {policy: { "default-src": "\'self\'", "img-src": "\'self\' data:"}},
+  xframe: 'SAMEORIGIN',
+  p3p: false,
+  hsts: {maxAge: 31536000, includeSubDomains: true, preload: true},
+  xssProtection: true,
+  nosniff: true,
+  referrerPolicy: 'same-origin'
+}));
+app.disable('x-powered-by');
 
 const limiter = rateLimit({
   // Rate limiter configuration
