@@ -42,8 +42,8 @@ const ShowCurrent = () => {
         <>
             {hidden &&
                 <div>
-                    <h4>Current email address: {email}</h4>
-                    <h4>Current password: {password}</h4>
+                    <h4>Current email address for receiving reports: {email}</h4>
+                    <h4>Current course key: {password}</h4>
                 </div>}
             <button onClick={showCredentials}>{verb} current credentials</button>
         </>

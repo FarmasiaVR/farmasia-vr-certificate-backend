@@ -8,11 +8,11 @@ const UpdateCredentials = ({ setMessage, setError }) => {
 
   const validatePassword = () => {
     if (password.length < 5 && password !== '') {
-      alert('Password needs to be atleast 5 letters long')
+      alert('Course key needs to be at least 5 characters in length')
       return false
     }
     if (password !== password2) {
-      alert('Passwords do not match!')
+      alert('Course keys do not match!')
       return false
     }
     return true
@@ -30,7 +30,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
     e.preventDefault()
 
     if (email === '' && password === '') {
-      setMessage('Please provide either an email or a password')
+      setMessage('Please provide either an email or a course key to be updated')
       return
     }
 
@@ -62,7 +62,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
     if (event.target.value.length < 20) {
       setPassword(event.target.value)
     } else {
-      alert('Password must be less than 20 characters')
+      alert('Course key must be less than 20 characters')
     }
   }
 
@@ -70,7 +70,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
     if (event.target.value.length < 20) {
       setPassword2(event.target.value)
     } else {
-      alert('Password must be less than 20 characters')
+      alert('Course key must be less than 20 characters')
     }
   }
 
@@ -82,15 +82,15 @@ const UpdateCredentials = ({ setMessage, setError }) => {
       <form onSubmit={handleSubmit}>
         <div>
           <div>
-            <h3>Email address to which certificates are sent</h3>
+            <h3>Email address to which reports are sent</h3>
             <input value={email} onChange={handleEmailChange} />
           </div>
           <div>
-            <h3>Password for FarmasiaVR certificates</h3>
+            <h3>Course key for FarmasiaVR students</h3>
             <input type="password" value={password2} onChange={handlePassword2Change} />
           </div>
           <div>
-            <h3>Repeat password</h3>
+            <h3>Repeat course key</h3>
             <input type="password" value={password} onChange={handlePasswordChange} />
           </div>
           <button type="submit">Submit</button>
