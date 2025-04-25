@@ -2,11 +2,13 @@ import express from 'express'
 import session from 'express-session'
 import cors from 'cors'
 import path from 'path'
+import { rateLimit } from 'express-rate-limit'
+import { RedisStore } from 'rate-limit-redis'
 
 import { PORT, NODE_ENV } from './utils/config.js'
 
 import setupDatabase from './utils/db.js'
-import redisConf from './utils/redis.js'
+import { redisConf, redisClient } from './utils/redis.js'
 import middleware from './utils/middleware.js'
 
 import router from './routes/router.js'
@@ -21,6 +23,18 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 app.use(middleware.requestLogger)
 app.use(session(redisConf))
+
+const limiter = rateLimit({
+  // Rate limiter configuration
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window`
+  standardHeaders: false, // Disable `RateLimit-*` headers
+  legacyHeaders: false, // Disable `X-RateLimit-*` headers
+
+  store: new RedisStore({
+    sendCommand: (...args) => redisClient.sendCommand(args)
+  }),
+})
 
 app.get(`${baseUrl}/health`, (req, res) => {
   res.send("Health check OK")
