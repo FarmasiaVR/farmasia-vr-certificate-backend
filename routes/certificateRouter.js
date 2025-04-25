@@ -5,7 +5,7 @@ import {db_query} from '../utils/db.js'
 
 const certificateRouter = express()
 
-const subject = "Certificate of Completion"
+const subject = "Student Completion Report - FarmasiaVR"
 
 
 // Endpoint for receiving gameplay summaries and testing
@@ -17,22 +17,21 @@ certificateRouter.post("/create", async (req, res) => {
     const info = await db_query('SELECT email, password FROM users WHERE id = 1')
     if (authorization !== info.rows[0].password) {
       console.log("Unauthorized")
-      return res.send("Unauthorized")
+      return res.status(403).send("Unauthorized")
     }
 
-    console.log("Request is authorized")
-    // Implemement logic for sending data to Pate service TBA
-    // the email address is in info.email
-    const message = "Testing Pate!"
+    console.log("Authorized")
+
+    const message = "A student has completed a scenario inside FarmasiaVR. Results:" + req.body.toString();
 
     const target = [info.rows[0].email]
     await sendEmail(target, message, subject)
 
-    return res.status(201).end()
+    return res.status(201).send("Message OK")
   }
   catch (e) {
     console.log("Error in certificate creation: ", e)
-    return res.status(500).end()
+    return res.status(500).send("Internal error")
   }
 })
 
