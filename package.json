@@ -1,6 +1,6 @@
 {
   "name": "farmasia-vr-certificate-backend",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "index.js",
