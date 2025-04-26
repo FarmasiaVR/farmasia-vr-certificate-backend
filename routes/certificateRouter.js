@@ -27,13 +27,13 @@ certificateRouter.post("/create", async (req, res) => {
     const scenario_name = req.body.scenario.toString();
 
     var mistakes = req.body.mistakes.length == 0 ? '<li>No general mistakes took place.</li>' : req.body.mistakes.reduce((list, item) => list.concat(`<li>${item.name.toString()}: \
-                                                                              <b>-${item.deducted.toString()} points</b>\
+                                                                              <b>-${item.pointsDeducted.toString()} points</b>\
                                                                          </li>`), '');
     var progress = req.body.progress.reduce((list, item) => list.concat(`<li>${item.name.toString()}</li>\
                                                                               <ul><li>Points awarded: <b>${item.awardedPoints.toString()}</b></li>\
                                                                                   ${item.completed ? '' : '<li>This step was <b>NOT</b> completed!</li>'} \
                                                                                   ${item.timeTaken == null ? '' : `<li>Time taken: ${item.timeTaken.toString()}</li>`}\
-                                                                                  ${item.mistakes.length != 0 ? `<li>Task mistakes:</li><ul>${item.mistakes.reduce((accumulator, next) => accumulator.concat(`<li>${next.name.toString()}: <b>-${next.deducted.toString()} points</b></li>`), '')}</ul>` : ''}\
+                                                                                  ${item.mistakes.length != 0 ? `<li>Task mistakes:</li><ul>${item.mistakes.reduce((accumulator, next) => accumulator.concat(`<li>${next.name.toString()}: <b>-${next.pointsDeducted.toString()} points</b></li>`), '')}</ul>` : ''}\
                                                                               </ul>`), '')
 
     const message = `A student with the email address <i>${student_email}</i> has completed scenario <b>${scenario_name}</b> in FarmasiaVR.
