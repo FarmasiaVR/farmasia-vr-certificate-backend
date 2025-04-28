@@ -23,7 +23,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
   }
 
   const validateEmail = () => {
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email) && email !== '') {
       alert('Please provide a valid email address')
       return false
     }
