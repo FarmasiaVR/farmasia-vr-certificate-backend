@@ -12,7 +12,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
       return false
     }
     if (/\s/.test(password)) {
-      alert('Password cannot contain spaces')
+      alert('Course key cannot contain spaces')
       return false
     }
     if (password !== password2) {
