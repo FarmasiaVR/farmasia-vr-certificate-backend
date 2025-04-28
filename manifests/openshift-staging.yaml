@@ -47,45 +47,6 @@ spec:
             requests:
               cpu: 300m
               memory: 100Mi
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              httpHeaders:
-                - name: Host
-                  value: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
-              path: /health
-              port: 3001
-              scheme: HTTP
-            initialDelaySeconds: 2
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              httpHeaders:
-                - name: Host
-                  value: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
-              path: /health
-              port: 3001
-              scheme: HTTP
-            initialDelaySeconds: 2
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          startupProbe:
-            failureThreshold: 3
-            httpGet:
-              httpHeaders:
-                - name: Host
-                  value: farmasiavr-backend-ohtuprojekti-staging.ext.ocp-test-0.k8s.it.helsinki.fi
-              path: /health
-              port: 3001
-              scheme: HTTP
-            initialDelaySeconds: 2
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
