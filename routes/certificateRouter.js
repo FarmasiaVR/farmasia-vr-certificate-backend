@@ -63,10 +63,10 @@ certificateRouter.put("/create_put", middleware.sessionChecker, async (req, res)
   var updateEmail = null
   var updatePassword = null
 
-  if (req.body.email != '') {
+  if (req.body.email != '' && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(req.body.email)) {
     updateEmail = req.body.email
   }
-  if (req.body.password != '') {
+  if (req.body.password != '' && !/\s/.test(req.body.password)) {
     updatePassword = req.body.password
   }
 
