@@ -11,6 +11,10 @@ const UpdateCredentials = ({ setMessage, setError }) => {
       alert('Course key needs to be at least 5 characters in length')
       return false
     }
+    if (/\s/.test(password)) {
+      alert('Password cannot contain spaces')
+      return false
+    }
     if (password !== password2) {
       alert('Course keys do not match!')
       return false
@@ -19,7 +23,7 @@ const UpdateCredentials = ({ setMessage, setError }) => {
   }
 
   const validateEmail = () => {
-    if (email.length < 5 && email !== '') {
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
       alert('Please provide a valid email address')
       return false
     }
