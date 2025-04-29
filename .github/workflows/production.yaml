@@ -3,6 +3,7 @@ name: Deploy to production
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -35,6 +36,25 @@ jobs:
         run: |-
           docker build --tag "farmasiavr/farmasiavr-backend-prod:${{ github.event.release.tag_name }}" --tag "farmasiavr/farmasiavr-backend-prod:latest" -f prod.Dockerfile .
           docker push --all-tags "farmasiavr/farmasiavr-backend-prod"
+          
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: http://my-app-url.com
+          state: 'success'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: http://my-app-url.com
+          state: 'failure'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+  
   gitlab-tag:
     name: Push release tag to version.helsinki.fi
     runs-on: ubuntu-latest
