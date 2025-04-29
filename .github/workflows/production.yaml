@@ -42,7 +42,7 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: '${{ github.token }}'
-          environment-url: http://my-app-url.com
+          environment-url: https://opetushallinto.cs.helsinki.fi/farmasiavr
           state: 'success'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
 
@@ -51,7 +51,7 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: '${{ github.token }}'
-          environment-url: http://my-app-url.com
+          environment-url: https://opetushallinto.cs.helsinki.fi/farmasiavr
           state: 'failure'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
   
